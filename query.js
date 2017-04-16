@@ -9,7 +9,7 @@ var Query = function () {
   this.connection = mysql.createConnection({
     host: '192.168.1.36',
     port: 3307,
-    user: 'Irina',
+    user: 'I',
     password: '1234',
     database: 'matching'
   });
