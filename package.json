@@ -1,0 +1,10 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "~1.16.0",
+    "express": "^4.14.1",
+    "node-fetch": "^1.6.3"
+  }
+}
