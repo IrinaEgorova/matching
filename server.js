@@ -253,18 +253,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 app.get('/api/tutors', function (req, res) {
-  var groupId = req.body.groupId;
-  // console.log(groupId);
-
-  var url = encodeURI('http://82.179.88.27:8280/core/v1/people?title=Преподаватель');
-
-  fetch(url)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (obj) {
-      res.send(obj);
-    });
+  query.getTutors(function (tutors) {
+    res.send(JSON.parse(tutors));
+  });
 });
 
 app.get('/api/groups', function (req, res) {
