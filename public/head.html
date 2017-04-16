@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Head area</title>
+  <link rel="stylesheet" href="css/head.css">
+  <script src="js/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div id="slide_0" class="first-slide">
+      <button class="start-button">Начать распределение</button>
+    </div>
+
+    <div id="slide_1" class="slide">
+      <div class="slide-header">Добавление групп</div>
+      <div class="slide-body">
+        <p>Добавьте группы, участвующие в распределении</p>
+        <div class="groups-list check-list">
+
+        </div>
+        <button class="choose-all choose-button">Выбрать всех</button>
+        <button class="cancel-choose choose-button">Отменить выбор</button>
+      </div>
+    </div>
+
+    <div id="slide_4" class="slide">
+      <div class="slide-header">Задание квоты</div>
+      <div class="slide-body">
+        <p>Задайте квоты преодавателей</p>
+        <table>
+          <tr>
+            <th></th>
+            <th>МОА</th>
+            <th>ИВТ</th>
+            <th>ПРИ</th>
+            <th>Общая квота</th>
+          </tr>
+          <tr>
+            <td><label>Подвесовский А.Г.</label></td>
+            <td><input title="quota_1" id="quota_11" type="number" value="3"></td>
+            <td><input title="quota_1" id="quota_12" type="number" value="3"></td>
+            <td><input title="quota_1" id="quota_13" type="number" value="3"></td>
+            <td><input title="quota_1" id="quota_14" type="number" value="3"></td>
+          </tr>
+          <tr>
+            <td><label>Лагерев Д.Г.</label></td>
+            <td><input title="quota_2" id="quota_21" type="number" value="3"></td>
+            <td><input title="quota_2" id="quota_22" type="number" value="3"></td>
+            <td><input title="quota_2" id="quota_23" type="number" value="3"></td>
+            <td><input title="quota_2" id="quota_24" type="number" value="3"></td>
+          </tr>
+          <tr>
+            <td><label>Коростелев Д.А.</label></td>
+            <td><input title="quota_3" id="quota_31" type="number" value="3"></td>
+            <td><input title="quota_3" id="quota_32" type="number" value="3"></td>
+            <td><input title="quota_3" id="quota_33" type="number" value="3"></td>
+            <td><input title="quota_3" id="quota_34" type="number" value="3"></td>
+          </tr>
+          <tr>
+            <td><label>Гулаков В.К.</label></td>
+            <td><input title="quota_4" id="quota_41" type="number" value="3"></td>
+            <td><input title="quota_4" id="quota_42" type="number" value="3"></td>
+            <td><input title="quota_4" id="quota_43" type="number" value="3"></td>
+            <td><input title="quota_4" id="quota_44" type="number" value="3"></td>
+          </tr>
+          <tr>
+            <td><label>Шалимов П.Ю.</label></td>
+            <td><input title="quota_5" id="quota_51" type="number" value="3"></td>
+            <td><input title="quota_5" id="quota_52" type="number" value="3"></td>
+            <td><input title="quota_5" id="quota_53" type="number" value="3"></td>
+            <td><input title="quota_5" id="quota_54" type="number" value="3"></td>
+          </tr>
+          <tr>
+            <td><label>Гулаков К.В.</label></td>
+            <td><input title="quota_6" id="quota_61" type="number" value="3"></td>
+            <td><input title="quota_6" id="quota_62" type="number" value="3"></td>
+            <td><input title="quota_6" id="quota_63" type="number" value="3"></td>
+            <td><input title="quota_6" id="quota_64" type="number" value="3"></td>
+          </tr>
+          <tr>
+            <td><label>Трубаков А.О.</label></td>
+            <td><input title="quota_7" id="quota_71" type="number" value="3"></td>
+            <td><input title="quota_7" id="quota_72" type="number" value="3"></td>
+            <td><input title="quota_7" id="quota_73" type="number" value="3"></td>
+            <td><input title="quota_7" id="quota_74" type="number" value="3"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div id="slide_5" class="slide">
+      <div class="slide-header">Задание дат для выражения предпочтений</div>
+      <div class="slide-body">
+        <p>Задайте даты для выражения предпочтений</p>
+        <table>
+          <tr>
+            <td><label>Дата начала распределения</label></td>
+            <td><input type="datetime-local"></td>
+          </tr>
+          <tr>
+            <td><label>Интервал между итерациями</label></td>
+            <td><input type="number"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="buttons-container">
+      <button class="back-button">Назад</button>
+      <button class="next-button">Далее</button>
+      <button class="run-button">Запустить</button>
+    </div>
+
+    <div class="main-container">
+      <table>
+        <tr>
+          <th>Группа</th>
+          <th>Количество студентов</th>
+          <th>Количество распределенных студентов</th>
+          <th>Количество нераспределенных студентов</th>
+        </tr>
+        <tr>
+          <td>МОА</td>
+          <td>25</td>
+          <td>20</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>ИВТ</td>
+          <td>25</td>
+          <td>20</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>ПРИ</td>
+          <td>15</td>
+          <td>10</td>
+          <td>5</td>
+        </tr>
+      </table>
+      <button class="left-button">Изменить</button>
+      <button class="right-button">Просмотреть лог</button>
+    </div>
+  </div>
+
+  <script src="js/head.js"></script>
+</body>
+</html>
