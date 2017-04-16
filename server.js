@@ -89,7 +89,7 @@ function compareUsers(users, dbUsers) {
     }
 
     var user = {};
-    
+
     user.FirstName = users[i].givenName;
     user.LastName = (Array.isArray(users[i].sn)) ? users[i].sn[0] : users[i].sn;
     user.PatronymicName = users[i].initials;
@@ -129,7 +129,7 @@ function compareGroups(groups, dbGroups) {
 
 // connection.end();
 var app = express();
-var port = 8080;
+var port = 8081;
 
 var students = [
   {
@@ -140,7 +140,8 @@ var students = [
       "Podvesovsky",
       "Trubakov",
       "Belov"
-    ]
+    ],
+    group: "PRI"
   },
   {
     name: "Sharova",
@@ -150,7 +151,8 @@ var students = [
       "Korostelev",
       "Lagerev",
       "Trubakov"
-    ]
+    ],
+    group: "PRI"
   },
   {
     name: "Ivanov",
@@ -160,7 +162,8 @@ var students = [
       "Belov",
       "Podvesovsky",
       "Lagerev"
-    ]
+    ],
+    group: "PRI"
   },
   {
     name: "Baranov",
@@ -170,7 +173,8 @@ var students = [
       "Belov",
       "Podvesovsky",
       "Lagerev"
-    ]
+    ],
+    group: "PRI"
   },
   {
     name: "Gusarov",
@@ -180,7 +184,8 @@ var students = [
       "Belov",
       "Podvesovsky",
       "Lagerev"
-    ]
+    ],
+    group: "PO"
   },
   {
     name: "Petruhin",
@@ -190,7 +195,8 @@ var students = [
       "Belov",
       "Podvesovsky",
       "Lagerev"
-    ]
+    ],
+    group: "PO"
   },
   {
     name: "Poliakova",
@@ -200,7 +206,8 @@ var students = [
       "Belov",
       "Podvesovsky",
       "Lagerev"
-    ]
+    ],
+    group: "PO"
   },
   {
     name: "Levkina",
@@ -210,35 +217,131 @@ var students = [
       "Belov",
       "Podvesovsky",
       "Lagerev"
-    ]
+    ],
+    group: "PO"
   }
 ];
 
 var tutors = [
   {
     name: "Trubakov",
-    quota: 2,
-    studList: []
+    commonQuota: 2,
+    groupQuotas: [
+      {
+        groupName: "PRI",
+        groupQuota: 1
+      },
+      {
+        groupName: "PO",
+        groupQuota: 1
+      }
+    ],
+    studLists: [
+      {
+        groupName: "PRI",
+        groupList: []
+      },
+      {
+        groupName: "PO",
+        groupList: []
+      }
+    ]
   },
   {
     name: "Korostelev",
-    quota: 2,
-    studList: []
+    commonQuota: 2,
+    groupQuotas: [
+      {
+        groupName: "PRI",
+        groupQuota: 1
+      },
+      {
+        groupName: "PO",
+        groupQuota: 1
+      }
+    ],
+    studLists: [
+      {
+        groupName: "PRI",
+        groupList: []
+      },
+      {
+        groupName: "PO",
+        groupList: []
+      }
+    ]
   },
   {
     name: "Belov",
-    quota: 2,
-    studList: []
+    commonQuota: 2,
+    groupQuotas: [
+      {
+        groupName: "PRI",
+        groupQuota: 1
+      },
+      {
+        groupName: "PO",
+        groupQuota: 1
+      }
+    ],
+    studLists: [
+      {
+        groupName: "PRI",
+        groupList: []
+      },
+      {
+        groupName: "PO",
+        groupList: []
+      }
+    ]
   },
   {
     name: "Podvesovsky",
-    quota: 2,
-    studList: []
+    commonQuota: 2,
+    groupQuotas: [
+      {
+        groupName: "PRI",
+        groupQuota: 1
+      },
+      {
+        groupName: "PO",
+        groupQuota: 1
+      }
+    ],
+    studLists: [
+      {
+        groupName: "PRI",
+        groupList: []
+      },
+      {
+        groupName: "PO",
+        groupList: []
+      }
+    ]
   },
   {
     name: "Lagerev",
-    quota: 2,
-    studList: []
+    commonQuota: 2,
+    groupQuotas: [
+      {
+        groupName: "PRI",
+        groupQuota: 1
+      },
+      {
+        groupName: "PO",
+        groupQuota: 1
+      }
+    ],
+    studLists: [
+      {
+        groupName: "PRI",
+        groupList: []
+      },
+      {
+        groupName: "PO",
+        groupList: []
+      }
+    ]
   }
 ];
 
@@ -246,16 +349,26 @@ app.listen(port);
 console.log('server started');
 
 //console.log(Matching);
-Matching.firstStep(students, tutors);
+tutors = Matching.firstStep(students, tutors);
+Matching.matchingStep(tutors);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 app.get('/api/tutors', function (req, res) {
-  query.getTutors(function (tutors) {
-    res.send(JSON.parse(tutors));
-  });
+  var groupId = req.body.groupId;
+  // console.log(groupId);
+
+  var url = encodeURI('http://82.179.88.27:8280/core/v1/people?title=Преподаватель');
+
+  fetch(url)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (obj) {
+      res.send(obj);
+    });
 });
 
 app.get('/api/groups', function (req, res) {

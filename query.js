@@ -7,9 +7,9 @@ var mysql = require('mysql');
 
 var Query = function () {
   this.connection = mysql.createConnection({
-    host: '192.168.136',
+    host: '192.168.1.36',
     port: 3307,
-    user: 'root',
+    user: 'Irina',
     password: '1234',
     database: 'matching'
   });
