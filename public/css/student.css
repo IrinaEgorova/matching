@@ -31,19 +31,21 @@ body {
 
 #left-panel {
     margin: 10px auto;
+    border: 1px dashed black;
 }
 
 #right-panel {
     margin: 10px auto;
     /*border: solid 1px #bbeeee;*/
     /*background-color: rgba(255, 255, 255, 0.6);*/
+    border: 1px dashed black;
 }
 
 /*.tutors-item {*/
-    /*border: solid 1px #a9c9eb;*/
-    /*background-color: #c1d8f1;*/
-    /*height: 40px;*/
-    /*margin: 0 0 3px 0;*/
+/*border: solid 1px #a9c9eb;*/
+/*background-color: #c1d8f1;*/
+/*height: 40px;*/
+/*margin: 0 0 3px 0;*/
 /*}*/
 
 .tutors-item:hover, .tutors-item label:hover, .tutors-item input:hover {
@@ -106,6 +108,11 @@ body {
 }
 
 .tutors-list {
+    height: 450px;
+    text-align: left;
+}
+
+.selected-tutors-list {
     height: 450px;
     text-align: left;
 }

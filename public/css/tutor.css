@@ -5,7 +5,6 @@ body {
     font-family: sans-serif;
 }
 
-
 .container {
     min-width: 500px;
     width: 70%;
@@ -42,6 +41,7 @@ body {
 #left-panel {
     margin: 0 auto;
     text-align: left;
+    border: 1px dashed black;
 }
 
 #right-panel {
@@ -50,14 +50,21 @@ body {
     background-color: rgba(255, 255, 255, 0.6);
 }
 
-.students-list {
-    border: solid 1px #a9c9eb;
+.tutors-item {
+    border: solid 1px #000000;
     background-color: #c1d8f1;
-    /*height: 30px;*/
-    /*margin: 0 0 3px 0;*/
-    /*padding-top: 10px;*/
-    /*padding-left: 10px;*/
+    margin: 0 0 3px 0;
+    padding: 11px 20px;
 }
+
+/*.students-list {*/
+/*border: solid 1px #a9c9eb;*/
+/*background-color: #c1d8f1;*/
+/*!*height: 30px;*!*/
+/*!*margin: 0 0 3px 0;*!*/
+/*!*padding-top: 10px;*!*/
+/*!*padding-left: 10px;*!*/
+/*}*/
 
 .students-list:hover, .students-list label:hover, .students-list input:hover {
     cursor: pointer;
@@ -120,10 +127,10 @@ body {
     background-color: #ff8888;
 }
 
-.students-list span {
-    margin-right: 20px;
-    float: right;
-}
+/*.students-list span {*/
+/*margin-right: 20px;*/
+/*float: right;*/
+/*}*/
 
 .students-table {
     display: table;
@@ -132,28 +139,28 @@ body {
 
 }
 
-.students-list {
-    display: table-row;
-}
+/*.students-list {*/
+/*display: table-row;*/
+/*}*/
 
-.students-list > div {
-    display: table-cell;
-}
+/*.students-list > div {*/
+/*display: table-cell;*/
+/*}*/
 
-.students-list td {
-    border-top: solid 1px #a9c9eb;
-    border-bottom: solid 1px #a9c9eb;
-    padding: 8px;
-    height: 20px;
-}
+/*.students-list td {*/
+/*border-top: solid 1px #a9c9eb;*/
+/*border-bottom: solid 1px #a9c9eb;*/
+/*padding: 8px;*/
+/*height: 20px;*/
+/*}*/
 
-.students-list td:first-child {
-    border-left: solid 1px #a9c9eb;
-}
+/*.students-list td:first-child {*/
+/*border-left: solid 1px #a9c9eb;*/
+/*}*/
 
-.students-list td:last-child {
-    border-right: solid 1px #a9c9eb;
-}
+/*.students-list td:last-child {*/
+/*border-right: solid 1px #a9c9eb;*/
+/*}*/
 
 .info-header {
     background-color: #a9c9eb;
@@ -175,13 +182,18 @@ body {
 
 .arrow {
     position: absolute;
-    top: 259px;
-    left: 672px;
+    top: 0px;
+    left: -19px;
     width: 0;
     height: 0;
-    border: 20px solid transparent;
+    border: 19px solid transparent;
     border-left: 0;
     border-right-color: #a9c9ff;
+}
+.student-info{
+    display: none;
+    position: relative;
+    width: 530px;
 }
 
 .inner-arrow {
@@ -191,7 +203,13 @@ body {
 }
 
 .selected {
-    -webkit-box-shadow: 0px 0px 3px 4px rgba(159,191,255,1);
-    -moz-box-shadow: 0px 0px 3px 4px rgba(159,191,255,1);
-    box-shadow: 0px 0px 3px 4px rgba(159,191,255,1);
+    -webkit-box-shadow: 0px 0px 3px 4px rgba(159, 191, 255, 1);
+    -moz-box-shadow: 0px 0px 3px 4px rgba(159, 191, 255, 1);
+    box-shadow: 0px 0px 3px 4px rgba(159, 191, 255, 1);
+}
+
+.students-list {
+    height: 450px;
+    text-align: left;
+    padding: 3px;
 }

@@ -357,33 +357,21 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 app.get('/api/tutors', function (req, res) {
-  var groupId = req.body.groupId;
-  // console.log(groupId);
+  query.getTutors(function (tutors) {
+    res.send(tutors);
+  });
+});
 
-  var url = encodeURI('http://82.179.88.27:8280/core/v1/people?title=Преподаватель');
-
-  fetch(url)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (obj) {
-      res.send(obj);
-    });
+app.post('/api/send_tutors', function (req, res) {
+  console.log(req.body.tutors);
+  // TODO:
+  res.send(req.body.tutors);
 });
 
 app.get('/api/groups', function (req, res) {
-  var url = encodeURI('http://82.179.88.27:8280/core/v1/groups');
-
-  fetch(url)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (obj) {
-      console.log(obj);
-
-
-      res.send(obj);
-    });
+  query.getGroups(function (groups) {
+    res.send(groups);
+  });
 });
 
 app.get('/tutor', function (req, res) {

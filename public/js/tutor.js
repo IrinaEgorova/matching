@@ -1,309 +1,224 @@
-/**
- * Created by Iren on 04.03.2017.
- */
+$(document).ready(function () {
+  $('.tutors-item').click(function (e) {
+    var $studinfo = $('.student-info');
+    $studinfo.css({
+      position: 'absolute',
+      left: $(this).offset().left + $(this).width() + 75,
+      top: $(this).offset().top + 3
+    });
+    $('.tutors-item').removeClass('selected');
+    $(this).addClass('selected');
+    e.stopPropagation();
+    $studinfo.show();
+  });
+});
 
-var students = [
-  {
-    name: "Morozov",
-    preferences: [
-      "Lagerev",
-      "Korostelev",
-      "Podvesovsky",
-      "Trubakov",
-      "Belov"
-    ],
-    group: "PRI"
-  },
-  {
-    name: "Sharova",
-    preferences: [
-      "Belov",
-      "Podvesovsky",
-      "Korostelev",
-      "Lagerev",
-      "Trubakov"
-    ],
-    group: "PRI"
-  },
-  {
-    name: "Ivanov",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PRI"
-  },
-  {
-    name: "Baranov",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PRI"
-  },
-  {
-    name: "Gusarov",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PO"
-  },
-  {
-    name: "Petruhin",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PO"
-  },
-  {
-    name: "Poliakova",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PO"
-  },
-  {
-    name: "Levkina",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PO"
-  }
-];
+$(document).click(function () {
+  $('.student-info').hide();
+});
 
-var tutors = [
-  {
-    name: "Trubakov",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  },
-  {
-    name: "Korostelev",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  },
-  {
-    name: "Belov",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  },
-  {
-    name: "Podvesovsky",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  },
-  {
-    name: "Lagerev",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  }
-];
+var DragManager = new function () {
 
-var numOfSteps = 4;
+  /**
+   * составной объект для хранения информации о переносе:
+   * {
+   *   elem - элемент, на котором была зажата мышь
+   *   avatar - аватар
+   *   downX/downY - координаты, на которых был mousedown
+   *   shiftX/shiftY - относительный сдвиг курсора от угла элемента
+   * }
+   */
+  var dragObject = {};
 
-function copyTutors(tutors) {
-  var tutorsStep = [];
-  for (var i = 0; i < tutors.length; i++) {
-    tutorsStep[i] = {};
-    tutorsStep[i].name = tutors[i].name;
-    tutorsStep[i].commonQuota = tutors[i].commonQuota;
-    var groupQuotas = tutors[i].groupQuotas;
-    for (var j = 0; j < groupQuotas.length; j++) {
-      tutorsStep[i].groupQuotas[j].groupName = groupQuotas[j].groupName;
-      tutorsStep[i].groupQuotas[j].groupQuota = groupQuotas[j].groupQuota;
-    }
-    tutorsStep[i].studList = [];
+  var self = this;
+
+  function onMouseDown(e) {
+
+    if (e.which != 1) return;
+
+    var elem = e.target.closest('.draggable');
+    if (!elem) return;
+
+    dragObject.elem = elem;
+
+    // запомним, что элемент нажат на текущих координатах pageX/pageY
+    dragObject.downX = e.pageX;
+    dragObject.downY = e.pageY;
+
+    return false;
   }
 
-  return tutorsStep;
-}
+  function onMouseMove(e) {
+    if (!dragObject.elem) return; // элемент не зажат
 
-function moveToNextTutor(tutors, tutorsStep, j) {
-  for (var i = tutors[j].commonQuota; i < tutors[j].studList.length; i++) {
-    var stud = tutors[j].studList[i];
-    var nextTutorIndex = stud.preferences.indexOf(stud.curTutor.name) + 1;
-    var nextTutor = stud.preferences[nextTutorIndex];
+    if (!dragObject.avatar) { // если перенос не начат...
+      var moveX = e.pageX - dragObject.downX;
+      var moveY = e.pageY - dragObject.downY;
 
-    if (nextTutor) {
-      for (var k = 0; k < tutors.length; k++) {
-        if (tutors[k].name === nextTutor) {
-          tutorsStep[k].studList.push(tutors[j].studList[i]);
-          stud.curTutor = tutors[k];
-        }
+      // если мышь передвинулась в нажатом состоянии недостаточно далеко
+      if (Math.abs(moveX) < 3 && Math.abs(moveY) < 3) {
+        return;
       }
-      tutors[j].studList.splice(i, 1);
-      i--;
+
+      // начинаем перенос
+      dragObject.avatar = createAvatar(e); // создать аватар
+      if (!dragObject.avatar) { // отмена переноса, нельзя "захватить" за эту часть элемента
+        dragObject = {};
+        return;
+      }
+
+      // аватар создан успешно
+      // создать вспомогательные свойства shiftX/shiftY
+      var coords = getCoords(dragObject.avatar);
+      dragObject.shiftX = dragObject.downX - coords.left;
+      dragObject.shiftY = dragObject.downY - coords.top;
+
+      startDrag(e); // отобразить начало переноса
     }
 
+    // отобразить перенос объекта при каждом движении мыши
+    dragObject.avatar.style.left = e.pageX - dragObject.shiftX + 'px';
+    dragObject.avatar.style.top = e.pageY - dragObject.shiftY + 'px';
+
+    return false;
   }
-}
 
-function copyStudents(tutor, tutorStep, length) {
-  for (var i = 0; i < length; i++) {
-    tutorStep.studList.push(tutor.studList[i]);
+  function onMouseUp(e) {
+    if (dragObject.avatar) { // если перенос идет
+      finishDrag(e);
+    }
+
+    // перенос либо не начинался, либо завершился
+    // в любом случае очистим "состояние переноса" dragObject
+    dragObject = {};
   }
-}
 
+  function finishDrag(e) {
+    var dropElem = findDroppable(e);
 
-var Matching = function () {
+    if (!dropElem) {
+      self.onDragCancel(dragObject);
+    } else {
+      self.onDragEnd(dragObject, dropElem);
+    }
+  }
+
+  function createAvatar(e) {
+
+    // запомнить старые свойства, чтобы вернуться к ним при отмене переноса
+    var avatar = dragObject.elem;
+    var old = {
+      parent: avatar.parentNode,
+      nextSibling: avatar.nextSibling,
+      position: avatar.position || '',
+      left: avatar.left || '',
+      top: avatar.top || '',
+      zIndex: avatar.zIndex || ''
+    };
+
+    // функция для отмены переноса
+    avatar.rollback = function () {
+      old.parent.insertBefore(avatar, old.nextSibling);
+      sortStudentList();
+      avatar.style.position = old.position;
+      avatar.style.left = old.left;
+      avatar.style.top = old.top;
+      avatar.style.zIndex = old.zIndex
+    };
+
+    return avatar;
+  }
+
+  function startDrag(e) {
+    var avatar = dragObject.avatar;
+
+    // инициировать начало переноса
+    document.body.appendChild(avatar);
+    sortStudentList();
+    avatar.style.zIndex = 9999;
+    avatar.style.position = 'absolute';
+    $('.tutors-item').removeClass('selected');
+    $(avatar).removeClass('red').removeClass('green').addClass('selected');
+  }
+
+  function findDroppable(event) {
+    // спрячем переносимый элемент
+    dragObject.avatar.hidden = true;
+
+    // получить самый вложенный элемент под курсором мыши
+    var elem = document.elementFromPoint(event.clientX, event.clientY);
+    dragObject.avatar.hidden = false;
+    if ($(elem).hasClass('draggable')) {
+      return elem;
+    } else if ($(elem).parent().hasClass('draggable')) {
+      return elem.parentNode;
+    }
+    // показать переносимый элемент обратно
+
+    if (elem == null) {
+      // такое возможно, если курсор мыши "вылетел" за границу окна
+      return null;
+    }
+
+    return elem.closest('.droppable');
+  }
+
+  document.onmousemove = onMouseMove;
+  document.onmouseup = onMouseUp;
+  document.onmousedown = onMouseDown;
+
+  this.onDragEnd = function (dragObject, dropElem) {
+    var avatar = dragObject.avatar;
+    avatar.style.zIndex = 1;
+    avatar.style.position = '';
+    var $dropElem = $(dropElem);
+
+    if ($dropElem.hasClass('draggable')) {
+      $dropElem.before(dragObject.elem);
+      sortStudentList($(dragObject.elem));
+      return;
+    }
+
+    $(dragObject.elem).addClass('selected');
+    dropElem.appendChild(dragObject.elem);
+    sortStudentList($(dragObject.elem));
+  };
+  this.onDragCancel = function (dragObject) {
+    dragObject.avatar.rollback();
+  };
 
 };
 
-Matching.matchingStep = function (tutors) {
-  var tutorsStep = copyTutors(tutors);
-
-  for (var i = 0; i < tutors.length; i++) {
-    var t = tutors[i];
-    for (var j = 0; j < t.groupQuotas.length; j++) {
-      if (t.studLists[j].length > t.groupQuotas[j]) {
-        copyStudents(t, tutorsStep[i], t.groupQuotas[j]);
-        moveToNextTutor(tutors, tutorsStep, i);
-      } else {
-        copyStudents(t, tutorsStep[i], t.studLists[j].length);
-      }
-    }
-
-  }
-  console.log(tutorsStep);
-  return tutorsStep;
-};
-
-Matching.firstStep = function (students, tutors) {
-  for (var i = 0; i < students.length; i++) {
-    var curStudentPref = students[i].preferences[0];
-    for (var j = 0; j < tutors.length; j++) {
-      var t = tutors[j];
-      if (t.name === curStudentPref) {
-        for (var k = 0; k < t.studLists.length; k++) {
-          if (t.studLists[k].groupName === students[i].group) {
-            t.studLists[k].groupList.push(students[i]);
-            students[i].curTutor = t;
-          }
-        }
-      }
-    }
+function sortStudentList($dropElem) {
+  $('.student-info').hide();
+  var $students = $('.students-list .tutors-item').removeClass('green').removeClass('red');
+  for (var i = 0; i < $students.length; i++) {
+    var elem = $($students[i]).find('span').first();
+    elem.html((i + 1) + '. ');
   }
 
-  return tutors;
-};
+  for (i = 0; i < 3; i++) {
+    $($students[i]).addClass('green');
+  }
 
-var firstTutors = Matching.firstStep(students, tutors);
+  for (i = 3; i < $students.length; i++) {
+    $($students[i]).addClass('red');
+  }
 
-Matching.matchingStep(firstTutors);
+  if ($dropElem) {
+    $dropElem.animate({opacity: '0.5'}, 300);
+    $dropElem.animate({opacity: '1'}, 300);
+    $dropElem.animate({opacity: '0.5'}, 300);
+    $dropElem.animate({opacity: '1'}, 300);
+  }
+}
+
+function getCoords(elem) { // кроме IE8-
+  var box = elem.getBoundingClientRect();
+
+  return {
+    top: box.top + pageYOffset,
+    left: box.left + pageXOffset
+  };
+
+}
