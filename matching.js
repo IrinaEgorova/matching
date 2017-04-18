@@ -256,12 +256,10 @@ function moveToNextTutor(tutors, tutorsStep, j) {
   }
 }
 
-function copyStudents(tutor, tutorStep, length) {
-  for (var j = 0; j < tutorStep.studLists.length; j++) {
-    for (var i = 0; i < length; i++) {
-      tutorStep.studLists[j].push(tutor.studLists[j][i]);
+function copyStudents(tutor, tutorStep, curI) {
+    for (var i = 0; i < tutor.groupQuotas[curI]; i++) {
+      tutorStep.studLists[curI].groupList.push(tutor.studLists[curI].groupList[i]);
     }
-  }
 }
 
 
@@ -276,7 +274,7 @@ Matching.matchingStep = function (tutors) {
     var t = tutors[i];
     for (var j = 0; j < t.groupQuotas.length; j++) {
       if (t.studLists[j].length > t.groupQuotas[j]) {
-        copyStudents(t, tutorsStep[i], t.groupQuotas[j]);
+        copyStudents(t, tutorsStep[i], j);
         moveToNextTutor(tutors, tutorsStep, i);
       } else {
         copyStudents(t, tutorsStep[i], t.studLists[j].length);

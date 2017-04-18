@@ -129,7 +129,7 @@ function compareGroups(groups, dbGroups) {
 
 // connection.end();
 var app = express();
-var port = 8081;
+var port = 8080;
 
 var students = [
   {
