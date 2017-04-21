@@ -94,4 +94,29 @@ Query.prototype.insertGroups = function (values) {
   }
 };
 
+Query.prototype.insertPreferences = function (student, tutors) {
+  
+  this.connection.query("DELETE FROM `matching`.`stud_pref` WHERE `stud_id`=" + student, function (err) {
+    if (err) throw err;
+  });
+  
+  for (var i = 0; i < tutors.length; i++) {
+    var pref = {
+      stud_id: 0,
+      tutor_id: 0,
+      position: 0
+    };
+
+    pref.stud_id = student;
+    pref.tutor_id = tutors[i].ID;
+    pref.position = i + 1;
+    
+    
+    this.connection.query("INSERT INTO `matching`.`stud_pref` SET ?", pref, function (err) {
+      if (err) throw err;
+    })
+
+  }
+};
+
 module.exports = Query;

@@ -12,6 +12,7 @@ var curSlide = -1;
 var fullTutorsList = [];
 var GROUPS_LIST = [];
 var TUTORS_LIST = [];
+var tutors;
 
 backButton.style.display = 'none';
 nextButton.style.display = 'none';
@@ -41,11 +42,11 @@ function generateSlide(groupInput) {
   var groupName = $(groupInput).closest('label').text();
 
   var slide = $('\
-      <div class="slide group-slide">\
+      <div class="slide group-slide" data-group-name="' + groupName + '">\
       <div class="slide-header">Добавление преподавателей для группы ' + groupName + '</div>\
     <div class="slide-body">\
       <p>Добавьте преподавателей, участвующих в распределении студентов группы ' + groupName + '</p>\
-      <div class="group-tutors-list"></div>\
+      <div class="group-tutors-list check-list"></div>\
       <button class="choose-all choose-button">Выбрать всех</button>\
       <button class="cancel-choose choose-button">Отменить выбор</button>\
       </div>\
@@ -53,10 +54,84 @@ function generateSlide(groupInput) {
   ');
 
   for (var i = 0; i < fullTutorsList.length; i++) {
-    slide.find('.group-tutors-list').append('<div class="tutor-item check-item"><label><input type="checkbox">' + fullTutorsList[i] + '</label></div>');
+    slide.find('.group-tutors-list').append('<div class="tutor-item check-item"><label><input type="checkbox" data-index="' + i + '">' + fullTutorsList[i] + '</label></div>');
   }
 
   return slide;
+}
+
+function createQuotasTableHeader(groupInputs) {
+  var headerRow = $('<tr><th></th></tr>');
+
+  for (var i = 0; i < groupInputs.length; i++) {
+    var header = $('<th></th>');
+    var dataIndex = $(groupInputs[i]).attr('data-index');
+    var group = GROUPS_LIST[dataIndex].GroupName;
+    header.html(group);
+    headerRow.append(header);
+  }
+
+  return headerRow;
+}
+
+function createQuotasTable() {
+  var groupInputs = $('.groups-list .group-item input:checked');
+  var quotasTable = $('.quotas-table').html('');
+  var headerRow = createQuotasTableHeader(groupInputs);
+  var tutors = [];
+
+  quotasTable.append(headerRow).append('<tbody></tbody>');
+
+  var tutorSlides = $('.group-slide');
+
+  for (var i = 0; i < tutorSlides.length; i++) {
+    var checkedTutors = $(tutorSlides[i]).find('input:checked');
+    for (var l = 0; l < checkedTutors.length; l++) {
+      var dataIndex = $(checkedTutors[l]).attr('data-index');
+      var tutor = TUTORS_LIST[dataIndex];
+      var groupName = $(tutorSlides[i]).attr('data-group-name');
+      if (!tutor.groups) {
+        tutor.groups = [];
+      }
+
+      if (tutors.indexOf(tutor) === -1) {
+        tutors.push(tutor);
+      }
+      tutor.groups.push(groupName);
+    }
+  }
+
+  for (var j = 0; j < tutors.length; j++) {
+    var tutorRow = $('<tr></tr>');
+    var tutorNameCell = $('<td></td>');
+    var groupCell;
+
+    var tutorName = tutors[j].LastName + ' ' + tutors[j].FirstName + ' ' + tutors[j].PatronymicName;
+
+    tutorNameCell.html(tutorName);
+    tutorRow.append(tutorNameCell);
+    for (var k = 0; k < groupInputs.length; k++) {
+      var groupIndex = $(groupInputs[k]).attr('data-index');
+      var group = GROUPS_LIST[groupIndex].GroupName;
+      var index = tutors[j].groups.indexOf(group);
+
+      if (index === -1) {
+        groupCell = $('<td><input type="number" value="0" disabled="disabled"></td>');
+      } else {
+        var input = $('<input type="number" value="3">');
+        groupCell = $('<td></td>');
+        groupCell.append(input);
+        if (!tutors[j].quotas) {
+          tutors[j].quotas = [];
+        }
+
+        tutors[j].quotas[index] = input;
+      }
+      tutorRow.append(groupCell);
+    }
+    $('.quotas-table tbody').append(tutorRow);
+  }
+  return tutors;
 }
 
 function showNextSlide() {
@@ -75,9 +150,23 @@ function showNextSlide() {
       return;
     }
 
+    $('.cancel-choose').click(function () {
+      var curSlide = $(this).closest('.slide-body');
+      var groupsCheckboxes = curSlide.find('.check-list .check-item input[type=checkbox]');
+      groupsCheckboxes.prop('checked', false);
+    });
 
-    console.log(groupInputs);
+    $('.choose-all').click(function () {
+      var curSlide = $(this).closest('.slide-body');
+      var groupsCheckboxes = curSlide.find('.check-list .check-item input[type=checkbox]');
+      groupsCheckboxes.prop('checked', true);
+    });
 
+  }
+
+  if ($(slides[curSlide + 1]).hasClass('quotas-slide')) {
+    tutors = createQuotasTable();
+    console.log('selected tutors', tutors);
   }
 
   slides[curSlide].style.display = 'none';
@@ -141,21 +230,58 @@ $(document).ready(function () {
     var groupsCheckboxes = curSlide.find('.check-list .check-item input[type=checkbox]');
     groupsCheckboxes.prop('checked', true);
   });
+  
+  $('.run-button').click(function () {
+   
+    var tutorsData = [];
+    tutors.forEach (function (tutor) {
+
+      for (var i = 0; i < tutor.quotas.length; i++) {
+        var temp = {};
+        temp.Tutor_ID = tutor.ID;
+        temp.Quota = tutor.quotas[i].val();
+        var groupName = tutor.groups[i];
+
+        for (var j = 0; j < GROUPS_LIST.length; j++) {
+          if (GROUPS_LIST[j].GroupName === groupName) {
+            break;
+          }
+        }
+        
+        temp.Group_ID = GROUPS_LIST[j].Group_ID;
+        tutorsData.push(temp);
+      }
+    });
+
+    console.log(tutorsData);
+
+    $.ajax({
+      url: 'http://localhost:8080/api/quotas',
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        tutors: tutorsData
+      }
+    }).done();
+  });
 
   $.ajax({
-    url: 'http://localhost:8081/api/groups',
+    url: 'http://localhost:8080/api/groups',
     method: 'GET',
     dataType: 'json'
   }).done(showGroups);
 
   $.ajax({
-    url: 'http://localhost:8081/api/tutors',
+    url: 'http://localhost:8080/api/tutors',
     method: 'GET',
     dataType: 'json',
     data: {
       title: 'Преподаватель'
     }
   }).done(showTutors);
+
+
+  
 });
 
 function showGroups(groups) {

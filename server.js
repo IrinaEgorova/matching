@@ -362,10 +362,20 @@ app.get('/api/tutors', function (req, res) {
   });
 });
 
-app.post('/api/send_tutors', function (req, res) {
+app.post('/api/preferences', function (req, res) {
+  console.log(req.body.pref);
+
+  query.insertPreferences(req.body.student, req.body.pref);
+
+  res.send(req.body.pref);
+});
+
+app.post('/api/quotas', function (req, res) {
   console.log(req.body.tutors);
-  // TODO:
-  res.send(req.body.tutors);
+
+  //query.insertPreferences(req.body.student, req.body.pref);
+
+  res.send(req.body.pref);
 });
 
 app.get('/api/groups', function (req, res) {

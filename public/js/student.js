@@ -202,13 +202,15 @@ for (var i = 0; i < tutors.length; i++) {
 $(document).ready(function () {
   // TODO: change ip to localhost
   $.ajax({
-    url: 'http://localhost:8081/api/tutors',
+    url: 'http://localhost:8080/api/tutors',
     method: 'GET',
     dataType: 'json',
     data: {
       title: 'Преподаватель'
     }
   }).done(showTutors);
+
+
 
   $('.send-button').click(function () {
     var $tutors = $('.selected-tutors-list .tutors-item');
@@ -219,15 +221,14 @@ $(document).ready(function () {
     console.log(tutors);
     console.log(JSON.stringify(tutors));
     $.ajax({
-      url: 'http://localhost:8081/api/send_tutors',
+      url: 'http://localhost:8080/api/preferences',
       method: 'POST',
       dataType: 'json',
       data: {
-        tutors: tutors
+        student: 3000,
+        pref: tutors
       }
-    }).done(function (args) {
-      console.log(args);
-    });
+    }).done();
   });
 });
 
