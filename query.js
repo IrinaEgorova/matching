@@ -7,7 +7,7 @@ var mysql = require('mysql');
 
 var Query = function () {
   this.connection = mysql.createConnection({
-    host: '192.168.1.36',
+    host: 'localhost',
     port: 3307,
     user: 'I',
     password: '1234',
@@ -79,7 +79,7 @@ Query.prototype.insertTutors = function (values) {
 
 Query.prototype.getGroups = function (callback) {
   var dbStudents;
-  this.connection.query("SELECT * FROM `matching`.`group_list`", function (err, rows, fields) {
+  this.connection.query("SELECT * FROM `matching`.`group_list`", function (err, rows) {
     if (err) throw err;
     dbStudents = rows;
     callback(rows);
@@ -96,7 +96,11 @@ Query.prototype.insertGroups = function (values) {
 
 Query.prototype.insertPreferences = function (student, tutors) {
   
-  this.connection.query("DELETE FROM `matching`.`stud_pref` WHERE `stud_id`=" + student, function (err) {
+  // this.connection.query("DELETE FROM `matching`.`stud_pref` WHERE `stud_id`=" + student, function (err) {
+  //   if (err) throw err;
+  // });
+
+  this.connection.query("TRUNCATE TABLE `matching`.`stud_pref`", function (err) {
     if (err) throw err;
   });
   
@@ -117,6 +121,31 @@ Query.prototype.insertPreferences = function (student, tutors) {
     })
 
   }
+};
+
+Query.prototype.insertQuotas = function (tutors) {
+
+  this.connection.query("TRUNCATE TABLE `matching`.`tutor_groups`", function (err) {
+    if (err) throw err;
+  });
+ 
+
+  for (var i = 0; i < tutors.length; i++) {
+    this.connection.query("INSERT INTO `matching`.`tutor_groups` SET ?", tutors, function (err) {
+      if (err) throw err;
+    })
+  }
+};
+
+Query.prototype.getStudPrefs = function (stud_id, callback) {
+  var dbStudPrefs;
+  console.log(stud_id);
+  this.connection.query("SELECT * FROM `matching`.`stud_pref` WHERE stud_id = " + stud_id, function (err, rows) {
+    if (err) throw err;
+    console.log(rows);
+    dbStudPrefs = rows;
+    callback(rows);
+  });
 };
 
 module.exports = Query;

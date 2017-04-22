@@ -61,8 +61,8 @@ function generateSlide(groupInput) {
 }
 
 function createQuotasTableHeader(groupInputs) {
-  var headerRow = $('<tr><th></th></tr>');
-
+  var headerRow = $('<thead><tr></tr></thead>');
+  headerRow.append('<th></th>');
   for (var i = 0; i < groupInputs.length; i++) {
     var header = $('<th></th>');
     var dataIndex = $(groupInputs[i]).attr('data-index');
@@ -239,7 +239,7 @@ $(document).ready(function () {
       for (var i = 0; i < tutor.quotas.length; i++) {
         var temp = {};
         temp.Tutor_ID = tutor.ID;
-        temp.Quota = tutor.quotas[i].val();
+        temp.Quota = parseInt(tutor.quotas[i].val());
         var groupName = tutor.groups[i];
 
         for (var j = 0; j < GROUPS_LIST.length; j++) {
@@ -263,6 +263,12 @@ $(document).ready(function () {
         tutors: tutorsData
       }
     }).done();
+
+    $.ajax({
+      url: 'http://localhost:8080/api/matching',
+      method: 'POST',
+      dataType: 'json'
+    }).done();
   });
 
   $.ajax({
@@ -279,6 +285,7 @@ $(document).ready(function () {
       title: 'Преподаватель'
     }
   }).done(showTutors);
+
 
 
   

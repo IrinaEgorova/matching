@@ -319,7 +319,7 @@ Matching.matchingStep = function (tutors) {
         copyStudents(t, tutorsStep[i], j);
         var removed = moveToNextTutor(tutors, i);
         removedStudents = removedStudents.concat(removed);
-        console.log('removed', removed);
+        // console.log('removed', removed);
       } else {
         copyStudents(t, tutorsStep[i], j);
       }
@@ -332,24 +332,24 @@ Matching.matchingStep = function (tutors) {
     var tutor = tutorsStep.find(function (tutor) {
       return tutor.name === nextTutor;
     });
-    console.log('tutors', tutor);
+    // console.log('tutors', tutor);
     var studList = tutor.studLists.find(function (list) {
       return list.groupName === student.group;
     });
-    console.log('studList', studList);
+    // console.log('studList', studList);
     if (studList.groupList.indexOf(student) === -1) {
       studList.groupList.push(student);
       student.curTutor = tutor;
       updateTutor(tutors, tutor);
-      console.log('updated', tutors);
+      // console.log('updated', tutors);
     }
   });
-  console.log(' -----------------STEP------------------- ');
+  // console.log(' -----------------STEP------------------- ');
   for (var g = 0; g < tutors.length; g++) {
-    console.log(tutors[g].name);
+    // console.log(tutors[g].name);
     for (var h = 0; h < tutors[g].studLists.length; h++) {
       for (var x = 0; x < tutors[g].studLists[h].groupList.length; x++) {
-        console.log(tutors[g].studLists[h].groupList[x]);
+        // console.log(tutors[g].studLists[h].groupList[x]);
       }
     }
   }

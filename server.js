@@ -18,11 +18,10 @@ query.getGroups(function (groups) {
     })
     .then(function (obj) {
       var insertArray = compareGroups(obj._embedded.groups, groups);
-      console.log('groups to add' + insertArray);
       query.insertGroups(insertArray);
 
       query.getGroups(function (stud) {
-        console.log("groups added");
+  
       })
     });
 });
@@ -36,11 +35,11 @@ query.getStudents(function (students) {
     })
     .then(function (obj) {
       var insertArray = compareUsers(obj._embedded.people, students);
-      console.log('students to add' + insertArray);
+     
       query.insertStudents(insertArray);
 
       query.getStudents(function (stud) {
-        console.log("students added");
+  
       })
     });
 
@@ -61,11 +60,11 @@ query.getTutors(function (tutors) {
     })
     .then(function (obj) {
       var insertArray = compareUsers(obj._embedded.people, tutors);
-      console.log('tutors  to add' + insertArray);
+   
       query.insertTutors(insertArray);
 
       query.getTutors(function (stud) {
-        console.log("tutors added");
+   
       })
     });
 });
@@ -131,226 +130,226 @@ function compareGroups(groups, dbGroups) {
 var app = express();
 var port = 8080;
 
-var students = [
-  {
-    name: "Morozov",
-    preferences: [
-      "Lagerev",
-      "Korostelev",
-      "Podvesovsky",
-      "Trubakov",
-      "Belov"
-    ],
-    group: "PRI"
-  },
-  {
-    name: "Sharova",
-    preferences: [
-      "Belov",
-      "Podvesovsky",
-      "Korostelev",
-      "Lagerev",
-      "Trubakov"
-    ],
-    group: "PRI"
-  },
-  {
-    name: "Ivanov",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PRI"
-  },
-  {
-    name: "Baranov",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PRI"
-  },
-  {
-    name: "Gusarov",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PO"
-  },
-  {
-    name: "Petruhin",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PO"
-  },
-  {
-    name: "Poliakova",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PO"
-  },
-  {
-    name: "Levkina",
-    preferences: [
-      "Trubakov",
-      "Korostelev",
-      "Belov",
-      "Podvesovsky",
-      "Lagerev"
-    ],
-    group: "PO"
-  }
-];
-
-var tutors = [
-  {
-    name: "Trubakov",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  },
-  {
-    name: "Korostelev",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  },
-  {
-    name: "Belov",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  },
-  {
-    name: "Podvesovsky",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  },
-  {
-    name: "Lagerev",
-    commonQuota: 2,
-    groupQuotas: [
-      {
-        groupName: "PRI",
-        groupQuota: 1
-      },
-      {
-        groupName: "PO",
-        groupQuota: 1
-      }
-    ],
-    studLists: [
-      {
-        groupName: "PRI",
-        groupList: []
-      },
-      {
-        groupName: "PO",
-        groupList: []
-      }
-    ]
-  }
-];
+// var students = [
+//   {
+//     name: "Morozov",
+//     preferences: [
+//       "Lagerev",
+//       "Korostelev",
+//       "Podvesovsky",
+//       "Trubakov",
+//       "Belov"
+//     ],
+//     group: "PRI"
+//   },
+//   {
+//     name: "Sharova",
+//     preferences: [
+//       "Belov",
+//       "Podvesovsky",
+//       "Korostelev",
+//       "Lagerev",
+//       "Trubakov"
+//     ],
+//     group: "PRI"
+//   },
+//   {
+//     name: "Ivanov",
+//     preferences: [
+//       "Trubakov",
+//       "Korostelev",
+//       "Belov",
+//       "Podvesovsky",
+//       "Lagerev"
+//     ],
+//     group: "PRI"
+//   },
+//   {
+//     name: "Baranov",
+//     preferences: [
+//       "Trubakov",
+//       "Korostelev",
+//       "Belov",
+//       "Podvesovsky",
+//       "Lagerev"
+//     ],
+//     group: "PRI"
+//   },
+//   {
+//     name: "Gusarov",
+//     preferences: [
+//       "Trubakov",
+//       "Korostelev",
+//       "Belov",
+//       "Podvesovsky",
+//       "Lagerev"
+//     ],
+//     group: "PO"
+//   },
+//   {
+//     name: "Petruhin",
+//     preferences: [
+//       "Trubakov",
+//       "Korostelev",
+//       "Belov",
+//       "Podvesovsky",
+//       "Lagerev"
+//     ],
+//     group: "PO"
+//   },
+//   {
+//     name: "Poliakova",
+//     preferences: [
+//       "Trubakov",
+//       "Korostelev",
+//       "Belov",
+//       "Podvesovsky",
+//       "Lagerev"
+//     ],
+//     group: "PO"
+//   },
+//   {
+//     name: "Levkina",
+//     preferences: [
+//       "Trubakov",
+//       "Korostelev",
+//       "Belov",
+//       "Podvesovsky",
+//       "Lagerev"
+//     ],
+//     group: "PO"
+//   }
+// ];
+//
+// var tutors = [
+//   {
+//     name: "Trubakov",
+//     commonQuota: 2,
+//     groupQuotas: [
+//       {
+//         groupName: "PRI",
+//         groupQuota: 1
+//       },
+//       {
+//         groupName: "PO",
+//         groupQuota: 1
+//       }
+//     ],
+//     studLists: [
+//       {
+//         groupName: "PRI",
+//         groupList: []
+//       },
+//       {
+//         groupName: "PO",
+//         groupList: []
+//       }
+//     ]
+//   },
+//   {
+//     name: "Korostelev",
+//     commonQuota: 2,
+//     groupQuotas: [
+//       {
+//         groupName: "PRI",
+//         groupQuota: 1
+//       },
+//       {
+//         groupName: "PO",
+//         groupQuota: 1
+//       }
+//     ],
+//     studLists: [
+//       {
+//         groupName: "PRI",
+//         groupList: []
+//       },
+//       {
+//         groupName: "PO",
+//         groupList: []
+//       }
+//     ]
+//   },
+//   {
+//     name: "Belov",
+//     commonQuota: 2,
+//     groupQuotas: [
+//       {
+//         groupName: "PRI",
+//         groupQuota: 1
+//       },
+//       {
+//         groupName: "PO",
+//         groupQuota: 1
+//       }
+//     ],
+//     studLists: [
+//       {
+//         groupName: "PRI",
+//         groupList: []
+//       },
+//       {
+//         groupName: "PO",
+//         groupList: []
+//       }
+//     ]
+//   },
+//   {
+//     name: "Podvesovsky",
+//     commonQuota: 2,
+//     groupQuotas: [
+//       {
+//         groupName: "PRI",
+//         groupQuota: 1
+//       },
+//       {
+//         groupName: "PO",
+//         groupQuota: 1
+//       }
+//     ],
+//     studLists: [
+//       {
+//         groupName: "PRI",
+//         groupList: []
+//       },
+//       {
+//         groupName: "PO",
+//         groupList: []
+//       }
+//     ]
+//   },
+//   {
+//     name: "Lagerev",
+//     commonQuota: 2,
+//     groupQuotas: [
+//       {
+//         groupName: "PRI",
+//         groupQuota: 1
+//       },
+//       {
+//         groupName: "PO",
+//         groupQuota: 1
+//       }
+//     ],
+//     studLists: [
+//       {
+//         groupName: "PRI",
+//         groupList: []
+//       },
+//       {
+//         groupName: "PO",
+//         groupList: []
+//       }
+//     ]
+//   }
+// ];
 
 app.listen(port);
 console.log('server started');
 
 //console.log(Matching);
-tutors = Matching.firstStep(students, tutors);
-Matching.matchingStep(tutors);
+// tutors = Matching.firstStep(students, tutors);
+// Matching.matchingStep(tutors);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -363,17 +362,13 @@ app.get('/api/tutors', function (req, res) {
 });
 
 app.post('/api/preferences', function (req, res) {
-  console.log(req.body.pref);
-
   query.insertPreferences(req.body.student, req.body.pref);
 
   res.send(req.body.pref);
 });
 
 app.post('/api/quotas', function (req, res) {
-  console.log(req.body.tutors);
-
-  //query.insertPreferences(req.body.student, req.body.pref);
+  query.insertQuotas(req.body.tutors);
 
   res.send(req.body.pref);
 });
@@ -394,4 +389,36 @@ app.get('/student', function (req, res) {
 
 app.get('/head', function (req, res) {
   res.sendfile('./public/head.html');
+});
+
+var dbStudents;
+var dbTutors;
+var dbStudPrefs;
+app.post('/api/matching', function (req, res) {
+
+  query.getStudents(function (students) {
+    dbStudents = students;
+
+    query.getTutors(function (tutors) {
+      dbTutors = tutors;
+      
+      var matchingStudents = [];
+      for (var i = 0; i < dbStudents.length; i++) {
+        matchingStudents[i] = {};
+        console.log(dbStudents[i]);
+        query.getStudPrefs(dbStudents[i].ID, function (studPrefs) {
+          dbStudPrefs = studPrefs;
+          console.log(dbStudPrefs);
+        });
+
+        matchingStudents[i].name = dbStudents.LastName;
+        matchingStudents[i].preferences = dbStudPrefs;
+        matchingStudents[i].group = dbStudents.Group_ID;
+      }
+    
+      // var firstTutors = Matching.firstStep(dbStudents, dbTutors);
+      // Matching.matchingStep(firstTutors);
+
+    });
+  });
 });
