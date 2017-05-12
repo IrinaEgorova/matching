@@ -7,7 +7,9 @@ var bodyParser = require('body-parser');
 var fetch = require('node-fetch');
 var Matching = require('./matching.js');
 var Query = require('./query.js');
+var orm = require("orm");
 var query = new Query();
+
 
 query.getGroups(function (groups) {
   var url = encodeURI('http://82.179.88.27:8280/core/v1/groups');
@@ -21,7 +23,7 @@ query.getGroups(function (groups) {
       query.insertGroups(insertArray);
 
       query.getGroups(function (stud) {
-  
+
       })
     });
 });
@@ -35,11 +37,11 @@ query.getStudents(function (students) {
     })
     .then(function (obj) {
       var insertArray = compareUsers(obj._embedded.people, students);
-     
+
       query.insertStudents(insertArray);
 
       query.getStudents(function (stud) {
-  
+
       })
     });
 
@@ -60,11 +62,11 @@ query.getTutors(function (tutors) {
     })
     .then(function (obj) {
       var insertArray = compareUsers(obj._embedded.people, tutors);
-   
+
       query.insertTutors(insertArray);
 
       query.getTutors(function (stud) {
-   
+
       })
     });
 });
@@ -128,6 +130,9 @@ function compareGroups(groups, dbGroups) {
 
 // connection.end();
 var app = express();
+
+
+
 var port = 8080;
 
 // var students = [
@@ -343,6 +348,58 @@ var port = 8080;
 //     ]
 //   }
 // ];
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static('public'));
+
+app.use(orm.express("mysql://I:1234@localhost:3307/matching", {
+  define: function (db, models, next) {
+    models.students = db.define("students", {
+      ID: Number,
+      FirstName: String,
+      LastName: String,
+      PatronymicName: String,
+      Group_ID: Number, // FLOAT
+      UID: String
+    }, {
+      methods: {
+        fullName: function () {
+          return this.FirstName + ' ' + this.LastName;
+        }
+      }
+    });
+
+    models.tutors = db.define("tutors", {
+      ID: Number,
+      FirstName: String,
+      LastName: String,
+      PatronymicName: String,
+      CommonQuota: Number,
+      UID: String
+    }, {
+      methods: {
+        fullName: function () {
+          return this.FirstName + ' ' + this.LastName;
+        }
+      }
+    });
+
+    models.groups = db.define("group_list", {
+      Group_ID: Number,
+      GroupName: String,
+      Group_UID: String
+    });
+
+    models.tutors_groups = db.define("tutors_groups", {
+      ID: Number,
+      Tutor_ID: Number,
+      Group_ID: Number,
+      Quota: Number
+    });
+
+    next();
+  }
+}));
 
 app.listen(port);
 console.log('server started');
@@ -351,14 +408,30 @@ console.log('server started');
 // tutors = Matching.firstStep(students, tutors);
 // Matching.matchingStep(tutors);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('public'));
+
 
 app.get('/api/tutors', function (req, res) {
   query.getTutors(function (tutors) {
     res.send(tutors);
   });
+});
+
+app.post('/api/getTutors', function (req, res) {
+  // console.log(req.body);
+  req.models.students.find({UID: req.body.studentUID}, function (err, person) {
+    var groupID = person.Group_ID;
+    // console.log(req.models.tutor_groups);
+    req.models.tutors_groups.find({Group_ID: 1}, function (err, row) {
+      // for (var i = 0; i < tutors.length; i++) {
+      //   req.models.tutors.find({ID: tutors[i].Tutor_ID}, function (err, tutor) {
+      //     console.log(tutor.LastName);
+      //   });
+      // }
+
+      console.log(row);
+
+    });
+  })
 });
 
 app.post('/api/preferences', function (req, res) {
@@ -394,28 +467,57 @@ app.get('/head', function (req, res) {
 var dbStudents;
 var dbTutors;
 var dbStudPrefs;
+
+
+function getStudentById(id, students) {
+  for (var j = 0; j < students.length; j++) {
+    // console.log(matchingStudents[i]);
+    if (id === students[i].ID) {
+      return students[i];
+      // console.log(matchingStudents[i].preferences);
+    }
+  }
+}
+
 app.post('/api/matching', function (req, res) {
+  var groups = req.body.groups;
 
   query.getStudents(function (students) {
     dbStudents = students;
 
     query.getTutors(function (tutors) {
       dbTutors = tutors;
-      
-      var matchingStudents = [];
-      for (var i = 0; i < dbStudents.length; i++) {
-        matchingStudents[i] = {};
-        console.log(dbStudents[i]);
-        query.getStudPrefs(dbStudents[i].ID, function (studPrefs) {
-          dbStudPrefs = studPrefs;
-          console.log(dbStudPrefs);
-        });
 
-        matchingStudents[i].name = dbStudents.LastName;
-        matchingStudents[i].preferences = dbStudPrefs;
-        matchingStudents[i].group = dbStudents.Group_ID;
-      }
-    
+      query.getStudPrefs(function (studPrefs) {
+        //TODO 
+
+
+        dbStudPrefs = studPrefs;
+
+        console.log(dbStudPrefs, dbStudents, dbTutors);
+
+        var matchingStudents = [];
+        for (var i = 0; i < groups.length; i++) {
+
+        }
+
+        for (var i = 0; i < dbStudents.length; i++) {
+          matchingStudents[i] = {};
+          matchingStudents[i].preferences = [];
+          matchingStudents[i].preferences.push(dbStudPrefs[j]);
+
+          // console.log(matchingStudents[i].preferences);
+          // matchingStudents[i].preferences = getValues(dbStudPrefs, dbStudents.ID);
+
+
+          matchingStudents[i].name = dbStudents.LastName;
+          matchingStudents[i].group = dbStudents.Group_ID;
+        }
+        // console.log(dbStudents[i]);
+
+      });
+
+
       // var firstTutors = Matching.firstStep(dbStudents, dbTutors);
       // Matching.matchingStep(firstTutors);
 

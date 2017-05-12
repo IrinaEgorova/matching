@@ -96,13 +96,13 @@ Query.prototype.insertGroups = function (values) {
 
 Query.prototype.insertPreferences = function (student, tutors) {
   
-  // this.connection.query("DELETE FROM `matching`.`stud_pref` WHERE `stud_id`=" + student, function (err) {
-  //   if (err) throw err;
-  // });
-
-  this.connection.query("TRUNCATE TABLE `matching`.`stud_pref`", function (err) {
+  this.connection.query("DELETE FROM `matching`.`stud_pref` WHERE `stud_id`=" + student, function (err) {
     if (err) throw err;
   });
+
+  // this.connection.query("TRUNCATE TABLE `matching`.`stud_pref`", function (err) {
+  //   if (err) throw err;
+  // });
   
   for (var i = 0; i < tutors.length; i++) {
     var pref = {
@@ -137,12 +137,12 @@ Query.prototype.insertQuotas = function (tutors) {
   }
 };
 
-Query.prototype.getStudPrefs = function (stud_id, callback) {
+Query.prototype.getStudPrefs = function (callback) {
   var dbStudPrefs;
-  console.log(stud_id);
-  this.connection.query("SELECT * FROM `matching`.`stud_pref` WHERE stud_id = " + stud_id, function (err, rows) {
+  // console.log(stud_id);
+  this.connection.query("SELECT * FROM `matching`.`stud_pref`", function (err, rows) {
     if (err) throw err;
-    console.log(rows);
+    // console.log(rows);
     dbStudPrefs = rows;
     callback(rows);
   });

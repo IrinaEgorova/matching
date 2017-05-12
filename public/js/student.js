@@ -202,11 +202,12 @@ for (var i = 0; i < tutors.length; i++) {
 $(document).ready(function () {
   // TODO: change ip to localhost
   $.ajax({
-    url: 'http://localhost:8080/api/tutors',
-    method: 'GET',
+    url: 'http://localhost:8080/api/getTutors',
+    method: 'POST',
     dataType: 'json',
     data: {
-      title: 'Преподаватель'
+      studentUID: '02db56e9-1093-478d-8615-cf0c0272a36c'
+
     }
   }).done(showTutors);
 
@@ -225,7 +226,7 @@ $(document).ready(function () {
       method: 'POST',
       dataType: 'json',
       data: {
-        student: 3000,
+        student: 2600,
         pref: tutors
       }
     }).done();

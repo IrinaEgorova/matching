@@ -255,6 +255,13 @@ $(document).ready(function () {
 
     console.log(tutorsData);
 
+    var groups = [];
+    var groupInputs = $('.groups-list .group-item input:checked');
+    for (var i = 0; i < groupInputs.length; i++) {
+      var dataIndex = $(groupInputs[i]).attr('data-index');
+      groups[i] = GROUPS_LIST[dataIndex].GroupName;
+    }
+
     $.ajax({
       url: 'http://localhost:8080/api/quotas',
       method: 'POST',
@@ -264,11 +271,14 @@ $(document).ready(function () {
       }
     }).done();
 
-    $.ajax({
-      url: 'http://localhost:8080/api/matching',
-      method: 'POST',
-      dataType: 'json'
-    }).done();
+    // $.ajax({
+    //   url: 'http://localhost:8080/api/matching',
+    //   method: 'POST',
+    //   dataType: 'json',
+    //   data: {
+    //     groups: groups
+    //   }
+    // }).done();
   });
 
   $.ajax({
@@ -287,8 +297,6 @@ $(document).ready(function () {
   }).done(showTutors);
 
 
-
-  
 });
 
 function showGroups(groups) {
