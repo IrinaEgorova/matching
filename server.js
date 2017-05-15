@@ -5,6 +5,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var fetch = require('node-fetch');
+var jwt = require('jsonwebtoken');
 var Matching = require('./matching.js');
 var Query = require('./query.js');
 var orm = require("orm");
@@ -409,6 +410,25 @@ console.log('server started');
 // Matching.matchingStep(tutors);
 
 
+app.post('/api/getTokenData', function (req, res) {
+  var jwtToken = req.body.token;
+  var decoded = jwt.decode(jwtToken);
+  var uid = decoded.sub;
+  console.log(uid);
+
+  var url = 'http://82.179.88.27:8280/core/v1/people/' + uid;
+  var encodeUrl = encodeURI(url);
+
+  fetch(encodeUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (person) {
+      var title = person.title;
+      var jsonTitle = '{"title" : ' + '"' + title + '"}';
+      res.send(jsonTitle);
+    });
+});
 
 app.get('/api/tutors', function (req, res) {
   query.getTutors(function (tutors) {
