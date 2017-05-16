@@ -3,6 +3,7 @@
  */
 
 var express = require('express');
+const proxy = require('express-http-proxy');
 var bodyParser = require('body-parser');
 var fetch = require('node-fetch');
 var jwt = require('jsonwebtoken');
@@ -131,7 +132,6 @@ function compareGroups(groups, dbGroups) {
 
 // connection.end();
 var app = express();
-
 
 
 var port = 8080;
@@ -352,7 +352,7 @@ var port = 8080;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
-
+app.use('/proxy', proxy('82.179.88.27:8280'));
 app.use(orm.express("mysql://I:1234@localhost:3307/matching", {
   define: function (db, models, next) {
     models.students = db.define("students", {
@@ -404,6 +404,9 @@ app.use(orm.express("mysql://I:1234@localhost:3307/matching", {
 
 app.listen(port);
 console.log('server started');
+app.get('/', function (req, res) {
+  res.json({message: 'hello'})
+});
 
 //console.log(Matching);
 // tutors = Matching.firstStep(students, tutors);
