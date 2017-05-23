@@ -10,7 +10,13 @@ var jwt = require('jsonwebtoken');
 var Matching = require('./matching.js');
 var Query = require('./query.js');
 var orm = require("orm");
+const Sequelize = require('sequelize');
 var query = new Query();
+const sequelize = new Sequelize('mysql://I:1234@localhost:3307/matching', {
+  define: {
+    timestamps: false // true by default
+  }
+});
 
 
 query.getGroups(function (groups) {
@@ -110,7 +116,7 @@ function compareGroups(groups, dbGroups) {
     var exist = false;
 
     for (var j = 0; j < dbGroups.length; j++) {
-      if (groups[i].id == dbGroups[j].Group_UID) {
+      if (groups[i].id == dbGroups[j].uid) {
         exist = true;
         break;
       }
@@ -121,8 +127,8 @@ function compareGroups(groups, dbGroups) {
     }
 
     var user = {};
-    user.GroupName = groups[i].name;
-    user.Group_UID = groups[i].id;
+    user.name = groups[i].name;
+    user.uid = groups[i].id;
     groupsArray.push(user);
   }
 
@@ -385,10 +391,10 @@ app.use(orm.express("mysql://I:1234@localhost:3307/matching", {
       }
     });
 
-    models.groups = db.define("group_list", {
-      Group_ID: Number,
-      GroupName: String,
-      Group_UID: String
+    models.groupsTable = db.define("groups", {
+      id: Number,
+      name: String,
+      uid: String
     });
 
     models.tutors_groups = db.define("tutors_groups", {
@@ -396,6 +402,13 @@ app.use(orm.express("mysql://I:1234@localhost:3307/matching", {
       Tutor_ID: Number,
       Group_ID: Number,
       Quota: Number
+    });
+
+    models.stud_pref = db.define("stud_pref", {
+      id: Number,
+      stud_id: Number,
+      tutor_id: Number,
+      position: Number
     });
 
     next();
@@ -428,8 +441,11 @@ app.post('/api/getTokenData', function (req, res) {
     })
     .then(function (person) {
       var title = person.title;
-      var jsonTitle = '{"title" : ' + '"' + title + '"}';
-      res.send(jsonTitle);
+      var jsonTitle = {
+        title: title,
+        uid: decoded.sub
+      };
+      res.send(JSON.stringify(jsonTitle));
     });
 });
 
@@ -440,19 +456,62 @@ app.get('/api/tutors', function (req, res) {
 });
 
 app.post('/api/getTutors', function (req, res) {
-  // console.log(req.body);
   req.models.students.find({UID: req.body.studentUID}, function (err, person) {
     var groupID = person.Group_ID;
-    // console.log(req.models.tutor_groups);
-    req.models.tutors_groups.find({Group_ID: 1}, function (err, row) {
+    req.models.tutors_groups.find({Group_ID: groupID}, function (err, row) {
+      var tutorId = [];
+      for (var i = 0; i < row.length; i++) {
+        tutorId.push(row[i].ID);
+      }
+      req.models.tutors.find({ID: tutorId}, function (err, row) {
+        res.send(row);
+      });
       // for (var i = 0; i < tutors.length; i++) {
       //   req.models.tutors.find({ID: tutors[i].Tutor_ID}, function (err, tutor) {
       //     console.log(tutor.LastName);
       //   });
       // }
 
-      console.log(row);
+      // console.log(row);
 
+    });
+  })
+});
+
+app.get('/api/getMatchingStudents', function (req, res) {
+  req.models.tutors_groups.all(function (err, quotas) {
+    var groups = [];
+    for (var i = 0; i < quotas.length; i++) {
+      var id = quotas[i].Group_ID;
+      if (groups.indexOf(id) === -1) {
+        groups.push(id);
+      }
+    }
+    req.models.students.find({Group_ID: groups}, function (err, row) {
+      req.models.groupsTable.find({id: groups}, function (err, group) {
+        console.log(err);
+        console.log(group);
+        res.send({
+          groups: group,
+          students: row
+        });
+      });
+    })
+  })
+});
+
+app.get('/api/getStudentsWithPref', function (req, res) {
+  req.models.stud_pref.all(function (err, pref) {
+    var students = [];
+    for (var i = 0; i < pref.length; i++) {
+      var id = pref[i].stud_id;
+      if (students.indexOf(id) === -1) {
+        students.push(id);
+      }
+    }
+
+    req.models.students.find({ID: students}, function (err, students) {
+      res.send(students);
     });
   })
 });
@@ -505,45 +564,51 @@ function getStudentById(id, students) {
 app.post('/api/matching', function (req, res) {
   var groups = req.body.groups;
 
-  query.getStudents(function (students) {
-    dbStudents = students;
-
-    query.getTutors(function (tutors) {
-      dbTutors = tutors;
-
-      query.getStudPrefs(function (studPrefs) {
-        //TODO 
-
-
-        dbStudPrefs = studPrefs;
-
-        console.log(dbStudPrefs, dbStudents, dbTutors);
-
-        var matchingStudents = [];
-        for (var i = 0; i < groups.length; i++) {
-
-        }
-
-        for (var i = 0; i < dbStudents.length; i++) {
-          matchingStudents[i] = {};
-          matchingStudents[i].preferences = [];
-          matchingStudents[i].preferences.push(dbStudPrefs[j]);
-
-          // console.log(matchingStudents[i].preferences);
-          // matchingStudents[i].preferences = getValues(dbStudPrefs, dbStudents.ID);
-
-
-          matchingStudents[i].name = dbStudents.LastName;
-          matchingStudents[i].group = dbStudents.Group_ID;
-        }
-        // console.log(dbStudents[i]);
-
+  req.models.students.all(function (err, students) {
+    req.models.tutors.all(function (err, tutors) {
+      req.models.stud_pref.all(function (err, prefs) {
+        console.log(students, tutors, prefs);
       });
-
-
-      // var firstTutors = Matching.firstStep(dbStudents, dbTutors);
-      // Matching.matchingStep(firstTutors);
-
     });
   });
+
+  // query.getStudents(function (students) {
+  //   dbStudents = students;
+  //
+  //   query.getTutors(function (tutors) {
+  //     dbTutors = tutors;
+  //
+  //     query.getStudPrefs(function (studPrefs) {
+  //
+  //       dbStudPrefs = studPrefs;
+  //
+  //       console.log(dbStudPrefs, dbStudents, dbTutors);
+  //
+  //       var matchingStudents = [];
+  //       for (var i = 0; i < groups.length; i++) {
+  //
+  //       }
+  //
+  //       for (var i = 0; i < dbStudents.length; i++) {
+  //         matchingStudents[i] = {};
+  //         matchingStudents[i].preferences = [];
+  //         matchingStudents[i].preferences.push(dbStudPrefs[j]);
+  //
+  //         // console.log(matchingStudents[i].preferences);
+  //         // matchingStudents[i].preferences = getValues(dbStudPrefs, dbStudents.ID);
+  //
+  //
+  //         matchingStudents[i].name = dbStudents.LastName;
+  //         matchingStudents[i].group = dbStudents.Group_ID;
+  //       }
+  //       // console.log(dbStudents[i]);
+  //
+  //     });
+  //
+  //
+  //     // var firstTutors = Matching.firstStep(dbStudents, dbTutors);
+  //     // Matching.matchingStep(firstTutors);
+  //
+  //   });
+  // });
 });

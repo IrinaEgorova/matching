@@ -2,7 +2,8 @@
  * Created by Iren on 09.04.2017.
  */
 
-var mysql = require('mysql');
+var mysql = require('mysql')
+var fetch = require('node-fetch')
 
 
 var Query = function () {
@@ -41,7 +42,7 @@ Query.prototype.updateStudent = function (value) {
 };
 
 Query.prototype.getGroupID = function (id, callback) {
-  this.connection.query("SELECT * FROM `matching`.`group_list` WHERE Group_UID = " + id, function (err, rows, fields) {
+  this.connection.query("SELECT * FROM `matching`.`groups` WHERE uid = " + id, function (err, rows, fields) {
     if (err) throw err;
     callback(rows);
   });
@@ -55,7 +56,7 @@ Query.prototype.updateStudentGroupId = function (url, id) {
     })
     .then(function (obj) {
       self.getGroupID(obj._links.groups[0].id, function (groups) {
-        self.updateStudent([{Group_ID: groups[0].Group_ID}, id])
+        self.updateStudent([{Group_ID: groups[0].id}, id])
       });
     });
 };
@@ -79,7 +80,7 @@ Query.prototype.insertTutors = function (values) {
 
 Query.prototype.getGroups = function (callback) {
   var dbStudents;
-  this.connection.query("SELECT * FROM `matching`.`group_list`", function (err, rows) {
+  this.connection.query("SELECT * FROM `matching`.`groups`", function (err, rows) {
     if (err) throw err;
     dbStudents = rows;
     callback(rows);
@@ -88,7 +89,7 @@ Query.prototype.getGroups = function (callback) {
 
 Query.prototype.insertGroups = function (values) {
   for (var i = 0; i < values.length; i++) {
-    this.connection.query("INSERT INTO `matching`.`group_list` SET ?", values[i], function (err) {
+    this.connection.query("INSERT INTO `matching`.`groups` SET ?", values[i], function (err) {
       if (err) throw err;
     })
   }
@@ -125,13 +126,13 @@ Query.prototype.insertPreferences = function (student, tutors) {
 
 Query.prototype.insertQuotas = function (tutors) {
 
-  this.connection.query("TRUNCATE TABLE `matching`.`tutor_groups`", function (err) {
+  this.connection.query("TRUNCATE TABLE `matching`.`tutors_groups`", function (err) {
     if (err) throw err;
   });
  
 
   for (var i = 0; i < tutors.length; i++) {
-    this.connection.query("INSERT INTO `matching`.`tutor_groups` SET ?", tutors, function (err) {
+    this.connection.query("INSERT INTO `matching`.`tutors_groups` SET ?", tutors[i], function (err) {
       if (err) throw err;
     })
   }

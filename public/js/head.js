@@ -66,7 +66,7 @@ function createQuotasTableHeader(groupInputs) {
   for (var i = 0; i < groupInputs.length; i++) {
     var header = $('<th></th>');
     var dataIndex = $(groupInputs[i]).attr('data-index');
-    var group = GROUPS_LIST[dataIndex].GroupName;
+    var group = GROUPS_LIST[dataIndex].name;
     header.html(group);
     headerRow.append(header);
   }
@@ -112,7 +112,7 @@ function createQuotasTable() {
     tutorRow.append(tutorNameCell);
     for (var k = 0; k < groupInputs.length; k++) {
       var groupIndex = $(groupInputs[k]).attr('data-index');
-      var group = GROUPS_LIST[groupIndex].GroupName;
+      var group = GROUPS_LIST[groupIndex].name;
       var index = tutors[j].groups.indexOf(group);
 
       if (index === -1) {
@@ -243,12 +243,12 @@ $(document).ready(function () {
         var groupName = tutor.groups[i];
 
         for (var j = 0; j < GROUPS_LIST.length; j++) {
-          if (GROUPS_LIST[j].GroupName === groupName) {
+          if (GROUPS_LIST[j].name === groupName) {
             break;
           }
         }
         
-        temp.Group_ID = GROUPS_LIST[j].Group_ID;
+        temp.Group_ID = GROUPS_LIST[j].id;
         tutorsData.push(temp);
       }
     });
@@ -259,7 +259,7 @@ $(document).ready(function () {
     var groupInputs = $('.groups-list .group-item input:checked');
     for (var i = 0; i < groupInputs.length; i++) {
       var dataIndex = $(groupInputs[i]).attr('data-index');
-      groups[i] = GROUPS_LIST[dataIndex].GroupName;
+      groups[i] = GROUPS_LIST[dataIndex].name;
     }
 
     $.ajax({
@@ -303,7 +303,7 @@ function showGroups(groups) {
   GROUPS_LIST = groups;
   for (var i = 0; i < groups.length; i++) {
     var g = groups[i];
-    var groupName = g.GroupName;
+    var groupName = g.name;
     $('.groups-list').append('<div class="group-item check-item"><label><input type="checkbox" data-index="' + i + '">' + groupName + '</label></div>');
   }
 }

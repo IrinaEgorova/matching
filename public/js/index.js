@@ -5,10 +5,9 @@
 $(document).ready(function () {
   var token = localStorage.getItem('user-token');
   console.log('Original Token', token);
-  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoZW50aWNhdGlvbi1zZXJ2aWNlLXYxLjAiLCJzdWIiOiJmNWQzODcxOC0zYjE4LTQ5MDgtOWViOC05M2RmMThmNGZiMmYiLCJhdWQiOiJ3c28yLWVzYiIsImlhdCI6IjIwMTctMDUtMTJUMTk6MzU6MDAuMTQ2WiIsImV4cCI6IjIwMTctMDYtMTJUMTk6MzU6MDAuMTQ2WiJ9.yGKk9qLdhNi6EMWtJFTN42Qt8E_1t86_0AH0y17jC8w';
-  console.log(token);
-  // window.location.replace("http://localhost:8080/student.html");
-
+  if (token == null) {
+    window.location.replace("http://localhost:8080/proxy/authentication/?redirect=localhost:8080");
+  }
 
   $.ajax({
     url: 'http://localhost:8080/api/getTokenData',
@@ -30,5 +29,9 @@ function redirectPerson(jsonTitle) {
   if (jsonTitle.title == 'Студент') {
     console.log(jsonTitle);
     window.location.replace("http://localhost:8080/student.html");
+  } else if (jsonTitle.title == 'Преподаватель') {
+    window.location.replace("http://localhost:8080/tutor.html");
+  } else if (jsonTitle.title == 'Лагерев') {
+    window.location.replace("http://localhost:8080/tutor.html");
   }
 }

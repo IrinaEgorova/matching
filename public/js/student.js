@@ -200,19 +200,33 @@ for (var i = 0; i < tutors.length; i++) {
 }
 
 $(document).ready(function () {
-  // TODO: change ip to localhost
+  var token = localStorage.getItem('user-token');
+  console.log('Original Token', token);
+  if (token == null) {
+    window.location.replace("http://localhost:8080/proxy/authentication/?redirect=localhost:8080");
+  }
   $.ajax({
-    url: 'http://localhost:8080/api/getTutors',
+    url: 'http://localhost:8080/api/getTokenData',
     method: 'POST',
     dataType: 'json',
     data: {
-      studentUID: '02db56e9-1093-478d-8615-cf0c0272a36c'
-
+      token: token
+    },
+    error: function (xhr, status, error) {
+      console.log(xhr.responseText + '|\n' + status + '|\n' + error);
     }
-  }).done(showTutors);
-
-
-
+  }).done(function (data) {
+    // TODO: change ip to localhost
+    $.ajax({
+      url: 'http://localhost:8080/api/getTutors',
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        studentUID: data.uid
+      }
+    }).done(showTutors);
+  });
+  
   $('.send-button').click(function () {
     var $tutors = $('.selected-tutors-list .tutors-item');
     var tutors = [];
