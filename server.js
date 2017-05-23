@@ -457,11 +457,11 @@ app.get('/api/tutors', function (req, res) {
 
 app.post('/api/getTutors', function (req, res) {
   req.models.students.find({UID: req.body.studentUID}, function (err, person) {
-    var groupID = person.Group_ID;
+    var groupID = person[0].Group_ID;
     req.models.tutors_groups.find({Group_ID: groupID}, function (err, row) {
       var tutorId = [];
       for (var i = 0; i < row.length; i++) {
-        tutorId.push(row[i].ID);
+        tutorId.push(row[i].Tutor_ID);
       }
       req.models.tutors.find({ID: tutorId}, function (err, row) {
         res.send(row);
@@ -489,8 +489,8 @@ app.get('/api/getMatchingStudents', function (req, res) {
     }
     req.models.students.find({Group_ID: groups}, function (err, row) {
       req.models.groupsTable.find({id: groups}, function (err, group) {
-        console.log(err);
-        console.log(group);
+        // console.log(err);
+        // console.log(group);
         res.send({
           groups: group,
           students: row
