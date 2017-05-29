@@ -12,10 +12,10 @@ body {
 }
 
 .left, .right {
-    width: 48%;
-    min-width: 120px;
-    display: inline-block;
-    vertical-align: top;
+    /*width: 48%;*/
+    /*min-width: 120px;*/
+    /*display: inline-block;*/
+    /*vertical-align: top;*/
 
 }
 
@@ -81,11 +81,9 @@ body {
 
 .send-button {
     width: 100%;
-    padding: 8px;
     cursor: pointer;
     background-color: #113333;
     color: #dbebf7;
-    border: solid 1px #113333;
     text-transform: uppercase;
 }
 
@@ -115,4 +113,12 @@ body {
 .selected-tutors-list {
     height: 450px;
     text-align: left;
+}
+
+h5 {
+    font-size: 1.24rem;
+}
+
+nav .brand-logo {
+    font-size: 1.64rem;
 }

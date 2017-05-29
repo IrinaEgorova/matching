@@ -226,7 +226,7 @@ $(document).ready(function () {
       }
     }).done(showTutors);
   });
-  
+
   $('.send-button').click(function () {
     var $tutors = $('.selected-tutors-list .tutors-item');
     var tutors = [];
@@ -235,15 +235,30 @@ $(document).ready(function () {
     }
     console.log(tutors);
     console.log(JSON.stringify(tutors));
+
     $.ajax({
-      url: 'http://localhost:8080/api/preferences',
+      url: 'http://localhost:8080/api/getTokenData',
       method: 'POST',
       dataType: 'json',
       data: {
-        student: 2600,
-        pref: tutors
+        token: token
+      },
+      error: function (xhr, status, error) {
+        console.log(xhr.responseText + '|\n' + status + '|\n' + error);
       }
-    }).done();
+    }).done(function (data) {
+      $.ajax({
+        url: 'http://localhost:8080/api/preferences',
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          studentUID: data.uid,
+          pref: tutors
+        }
+      }).done();
+    });
+
+
   });
 });
 

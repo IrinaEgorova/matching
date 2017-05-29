@@ -3,20 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Head area</title>
-  <link rel="stylesheet" href="css/head.css">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="js/jquery-3.1.1.min.js"></script>
+  <script src="js/materialize.min.js"></script>
+  <link rel="stylesheet" href="css/materialize.min.css">
+  <link rel="stylesheet" href="css/head.css">
 </head>
 <body>
-  <div class="container">
+  <div class="row container-block">
+    <!--<nav style="margin: 0 0 20px 0; padding-left: 10px;" class="teal darken-3">-->
+      <!--<div class="nav-wrapper">-->
+        <!--<a href="#" class="right brand-logo">Сервис распредления студентов</a>-->
+        <!--<ul id="nav-mobile" class="left hide-on-med-and-down">-->
+          <!--<li><a href="student.html">Заполнить информацию</a></li>-->
+          <!--<li><a href="student.html">Выбрать преподавателей</a></li>-->
+        <!--</ul>-->
+      <!--</div>-->
+    <!--</nav>-->
     <div id="slide_0" class="first-slide">
-      <button class="start-button">Начать распределение</button>
+      <button class="btn pulse start-button" style="background-color: #113333">Начать распределение</button>
     </div>
 
-    <div id="slide_1" class="slide">
-      <div class="slide-header">Добавление групп</div>
-      <div class="slide-body">
+    <div id="slide_1" class="slide slide teal lighten-5">
+      <div class="row slide-header  teal darken-4">Добавление групп</div>
+      <div class="row slide-body">
         <p>Добавьте группы, участвующие в распределении</p>
-        <div class="groups-list check-list">
+        <div class="row groups-list check-list">
 
         </div>
         <button class="choose-all choose-button">Выбрать всех</button>
@@ -24,8 +36,8 @@
       </div>
     </div>
 
-    <div id="slide_4" class="slide quotas-slide">
-      <div class="slide-header">Задание квоты</div>
+    <div id="slide_4" class="row slide quotas-slide slide teal lighten-5">
+      <div class="slide-header  teal darken-4">Задание квоты</div>
       <div class="slide-body">
         <p>Задайте квоты преодавателей</p>
         <div class="scroll-container">
@@ -37,8 +49,8 @@
       </div>
     </div>
 
-    <div id="slide_5" class="slide">
-      <div class="slide-header">Задание дат для выражения предпочтений</div>
+    <div id="slide_5" class="row slide slide teal lighten-5">
+      <div class="slide-header  teal darken-4">Задание дат для выражения предпочтений</div>
       <div class="slide-body">
         <p>Задайте даты для выражения предпочтений</p>
         <table>
@@ -53,42 +65,11 @@
         </table>
       </div>
     </div>
-    <div class="buttons-container">
-      <button class="back-button">Назад</button>
-      <button class="next-button">Далее</button>
-      <a class="run-button" href="monitoring.html">Запустить</a>
+    <div class="row buttons-container">
+      <button class="btn back-button">Назад</button>
+      <button class="btn next-button">Далее</button>
+      <a class="btn run-button pulse" href="monitoring.html">Запустить</a>
     </div>
-
-    <!--<div class="main-container">-->
-      <!--<table>-->
-        <!--<tr>-->
-          <!--<th>Группа</th>-->
-          <!--<th>Количество студентов</th>-->
-          <!--<th>Количество распределенных студентов</th>-->
-          <!--<th>Количество нераспределенных студентов</th>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>МОА</td>-->
-          <!--<td>25</td>-->
-          <!--<td>20</td>-->
-          <!--<td>5</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>ИВТ</td>-->
-          <!--<td>25</td>-->
-          <!--<td>20</td>-->
-          <!--<td>5</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>ПРИ</td>-->
-          <!--<td>15</td>-->
-          <!--<td>10</td>-->
-          <!--<td>5</td>-->
-        <!--</tr>-->
-      <!--</table>-->
-      <!--<button class="left-button">Изменить</button>-->
-      <!--<button class="right-button">Просмотреть лог</button>-->
-    <!--</div>-->
   </div>
 
   <script src="js/head.js"></script>

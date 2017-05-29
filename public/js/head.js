@@ -6,7 +6,7 @@ var nextButton = document.querySelector('.next-button');
 var backButton = document.querySelector('.back-button');
 var runButton = document.querySelector('.run-button');
 var mainContainer = document.querySelector('.main-container');
-var container = document.querySelector('.container');
+var container = document.querySelector('.container-block');
 
 var curSlide = -1;
 var fullTutorsList = [];
@@ -39,14 +39,14 @@ function showButtons() {
 }
 
 function generateSlide(groupInput) {
-  var groupName = $(groupInput).closest('label').text();
+  var groupName = $(groupInput).next().text();
 
   var slide = $('\
-      <div class="slide group-slide" data-group-name="' + groupName + '">\
-      <div class="slide-header">Добавление преподавателей для группы ' + groupName + '</div>\
-    <div class="slide-body">\
+      <div class="slide group-slide slide teal lighten-5" data-group-name="' + groupName + '">\
+      <div class="row slide-header teal darken-4">Добавление преподавателей для группы ' + groupName + '</div>\
+    <div class="row slide-body">\
       <p>Добавьте преподавателей, участвующих в распределении студентов группы ' + groupName + '</p>\
-      <div class="group-tutors-list check-list"></div>\
+      <div class="row group-tutors-list check-list"></div>\
       <button class="choose-all choose-button">Выбрать всех</button>\
       <button class="cancel-choose choose-button">Отменить выбор</button>\
       </div>\
@@ -54,7 +54,13 @@ function generateSlide(groupInput) {
   ');
 
   for (var i = 0; i < fullTutorsList.length; i++) {
-    slide.find('.group-tutors-list').append('<div class="tutor-item check-item"><label><input type="checkbox" data-index="' + i + '">' + fullTutorsList[i] + '</label></div>');
+    slide.find('.group-tutors-list').append('<div class="tutor-item check-item">' +
+      '<input id="tutor-' + groupName + i +
+      '" type="checkbox" data-index="' + i + '">' +
+      '<label for="tutor-' + groupName + i +
+      '">' +
+      fullTutorsList[i] + '</label>' +
+      '</div>');
   }
 
   return slide;
@@ -230,11 +236,11 @@ $(document).ready(function () {
     var groupsCheckboxes = curSlide.find('.check-list .check-item input[type=checkbox]');
     groupsCheckboxes.prop('checked', true);
   });
-  
+
   $('.run-button').click(function () {
-   
+
     var tutorsData = [];
-    tutors.forEach (function (tutor) {
+    tutors.forEach(function (tutor) {
 
       for (var i = 0; i < tutor.quotas.length; i++) {
         var temp = {};
@@ -247,7 +253,7 @@ $(document).ready(function () {
             break;
           }
         }
-        
+
         temp.Group_ID = GROUPS_LIST[j].id;
         tutorsData.push(temp);
       }
@@ -304,7 +310,13 @@ function showGroups(groups) {
   for (var i = 0; i < groups.length; i++) {
     var g = groups[i];
     var groupName = g.name;
-    $('.groups-list').append('<div class="group-item check-item"><label><input type="checkbox" data-index="' + i + '">' + groupName + '</label></div>');
+    $('.groups-list').append('<div class="group-item check-item">' +
+      '<input id="group-item-' + i +
+      '" type="checkbox" data-index="' + i + '">' +
+      '<label for="group-item-' + i +
+      '">' +
+      groupName + '</label>' +
+      '</div>');
   }
 }
 

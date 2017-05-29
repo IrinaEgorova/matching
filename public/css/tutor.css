@@ -12,7 +12,7 @@ body {
 }
 
 .left, .right {
-    width: 46%;
+    /*width: 46%;*/
     min-width: 120px;
     display: inline-block;
     vertical-align: top;
@@ -95,36 +95,36 @@ body {
 .header {
     text-transform: uppercase;
     line-height: 1.5;
+    font-size: 18px;
 }
 
 .send-button {
     /*width: 100%;*/
-    padding: 8px;
     cursor: pointer;
+    margin-top: 5px;
     background-color: #113333;
     color: #dbebf7;
-    border: solid 1px #113333;
     text-transform: uppercase;
     float: left;
 }
 
 .quota-button {
     /*width: 100%;*/
-    padding: 8px;
+    padding: 0 5px;
+    margin-top: 5px;
     cursor: pointer;
     background-color: #113333;
     color: #dbebf7;
-    border: solid 1px #113333;
     text-transform: uppercase;
     float: right;
 }
 
 .green {
-    background-color: #88ffaa;
+    background-color: #88ffaa !important;
 }
 
 .red {
-    background-color: #ff8888;
+    background-color: #ff8888 !important;
 }
 
 /*.students-list span {*/
@@ -182,18 +182,18 @@ body {
 
 .arrow {
     position: absolute;
-    top: 0px;
-    left: -19px;
+    top: 0;
+    left: -21px;
     width: 0;
     height: 0;
-    border: 19px solid transparent;
+    border: 21px solid transparent;
     border-left: 0;
-    border-right-color: #a9c9ff;
+    border-right-color: #a9c9eb;
 }
 .student-info{
     display: none;
     position: relative;
-    width: 530px;
+    width: 430px;
 }
 
 .inner-arrow {
@@ -212,4 +212,16 @@ body {
     height: 450px;
     text-align: left;
     padding: 3px;
+}
+
+h5 {
+    font-size: 1.24rem;
+}
+
+nav .brand-logo {
+    font-size: 1.64rem;
+}
+
+.group {
+    float: right;
 }

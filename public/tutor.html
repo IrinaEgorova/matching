@@ -3,73 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <title>Tutor personal area</title>
-    <link rel="stylesheet" href="css/tutor.css">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/tutor.css">
 </head>
 <body>
 <div class="container">
-    <div class="iteration-info">
-        <div>Текущая итерация: 1</div>
-        <div>Квота: 3</div>
-        <!--<a href="#">Запросить увеличение квоты</a>-->
+    <nav style="margin: 0; padding-left: 10px;" class="teal darken-4">
+        <div class="nav-wrapper">
+            <a href="#" class="right brand-logo teal darken-4">Сервис распредления студентов</a>
+            <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="student.html">Заполнить информацию</a></li>
+                <li><a href="student.html">Выбрать студентов</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="nav-content">
+        <div class="iteration-info">
+            <div>Текущая итерация: 1</div>
+            <div>Квота: 3</div>
+            <!--<a href="#">Запросить увеличение квоты</a>-->
+        </div>
     </div>
+
     <div class="panels-container">
-        <div class="left">
+        <div class="left col s6">
             <div class="header">Список студентов</div>
             <div id="left-panel" class="panel">
                 <div class="students-list droppable">
                     <div class="tutors-item green draggable">
                         <span>1. </span>
                         <span>Морозов Дмитрий Сергеевич</span>
-                        <span>13ПРИ</span>
+                        <span class="group">13ПРИ</span>
                     </div>
                     <div class="tutors-item green draggable">
                         <span>2. </span>
                         <span>Шарова Юлия Сергеевна</span>
-                        <span>13ПРИ</span>
+                        <span class="group">13ПРИ</span>
                     </div>
                     <div class="tutors-item green draggable">
                         <span>3. </span>
                         <span>Петрухин Роман Артурович</span>
-                        <span>13МОА</span>
+                        <span class="group">13МОА</span>
                     </div>
                     <div class="tutors-item red selected draggable">
                         <span>4. </span>
                         <span>Иванов Владислав Александрович</span>
-                        <span>13ПРИ</span>
+                        <span class="group">13ПРИ</span>
                     </div>
                     <div class="tutors-item red draggable">
                         <span>5. </span>
                         <span>Баранов Владимир Николаевич</span>
-                        <span>13ПРИ</span>
+                        <span class="group">13ПРИ</span>
                     </div>
                     <div class="tutors-item red draggable">
                         <span>6. </span>
                         <span>Гусаров Алексей Викторович</span>
-                        <span>13МОА</span>
+                        <span class="group">13МОА</span>
                     </div>
                     <div class="tutors-item red draggable">
                         <span>7. </span>
                         <span>Полякова Марина Сергеевна</span>
-                        <span>13МОА</span>
+                        <span class="group">13МОА</span>
                     </div>
                     <div class="tutors-item red draggable">
                         <span>8. </span>
                         <span>Цветков Максим Геннадьевич</span>
-                        <span>13ИВТ</span>
+                        <span class="group">13ИВТ</span>
                     </div>
                     <div class="tutors-item red draggable">
                         <span>9. </span>
                         <span>Левкина Ольга Константиновна</span>
-                        <span>13МОА</span>
+                        <span class="group">13МОА</span>
                     </div>
                 </div>
             </div>
-            <button class="send-button">Отправить</button>
-            <button class="quota-button">Запросить увеличение квоты</button>
+            <button class="btn send-button" style="margin-right: 10px">Отправить</button>
+            <button class="btn small quota-button">Запросить увеличение квоты</button>
         </div>
-        <div class="right">
-            <div class="student-info">
+        <div class="right col s6">
+            <div class="student-info col s6">
                 <div class="arrow">
                     <div class="inner-arrow"></div>
                 </div>
@@ -90,8 +105,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
     <!--<div id="info" class="info-panel">-->
