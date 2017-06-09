@@ -1,0 +1,17 @@
+body {
+    margin: 1px;
+    background-color: #eee;
+    color: #113333;
+    font-family: sans-serif;
+}
+
+td, th {
+    padding: 5px;
+}
+
+.iteration-button {
+    margin-top: 20px;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}

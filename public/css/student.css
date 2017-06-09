@@ -122,3 +122,18 @@ h5 {
 nav .brand-logo {
     font-size: 1.64rem;
 }
+
+input[type="text"] {
+    width: 95%;
+    margin: 0;
+    height: 35px;
+}
+
+label {
+    color: #113333;
+    margin-right: 7px;
+}
+
+.input-field label {
+    color: #5e5e5e;
+}

@@ -14,7 +14,11 @@
 <div class="row container">
   <nav style="margin: 0; padding-left: 10px;" class="teal darken-4">
     <div class="nav-wrapper">
-      <a href="#" class="right brand-logo teal darken-4">Сервис распредления студентов</a>
+      <div style="position: absolute;left: 630px;z-index: 1000;top: 18px;">Иванов Владислав Александрович</div><div>
+      <a href="#" class="right brand-logo teal darken-4" style="
+    margin-top: -12px;
+    background: transparent !important;
+">Сервис распределения студентов</a>
       <ul id="nav-mobile" class="left hide-on-med-and-down">
         <li><a href="student.html">Заполнить информацию</a></li>
         <li><a href="student.html">Выбрать преподавателей</a></li>
@@ -46,6 +50,22 @@
     </div>
 
   </div>
+
+  <div  style="display: none; position: relative;height: 450px; padding: 20px; margin-top: 15px" class="col s12 teal lighten-4 z-depth-2">
+    <div style="font-weight: bold; margin-bottom: 5px">Укажите желаемую тему ВКР и используемые технологии разработки</div>
+    <div>
+      <div class="input-field col s6">
+        <label style="display: inline;">Тема ВКР </label>
+        <textarea class="materialize-textarea"></textarea>
+      </div>
+      <div class="input-field col s6">
+        <label style="display: inline;">Технологии и средства разработки </label>
+        <textarea class="materialize-textarea"></textarea>
+      </div>
+    </div>
+    <button style="position: absolute; bottom: 20px; right: 20px;" class="btn right teal darken-4">Отправить</button>
+  </div>
+
 </div>
 
 <div class="popup">

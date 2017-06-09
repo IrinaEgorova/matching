@@ -1,0 +1,19 @@
+.collapsible-body {
+    padding: 0 15px;
+}
+
+.collapsible {
+    margin: 0;
+}
+
+td, th {
+    vertical-align: top;
+}
+
+p {
+    margin: 5px 0;
+}
+
+.striped td {
+    padding: 1px;
+}

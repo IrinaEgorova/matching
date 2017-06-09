@@ -26,6 +26,14 @@ if (!Array.prototype.find) {
 }
 
 $(document).ready(function () {
+  $('.iteration-button').click(function (){
+    console.log('click');
+    $.ajax({
+      url: 'http://localhost:8080/api/matching',
+      method: 'POST',
+      dataType: 'json'
+    }).done(startMatching);
+  });
   $.ajax({
     url: 'http://localhost:8080/api/getMatchingStudents',
     method: 'GET',
@@ -60,7 +68,7 @@ function getMatchingStudents(data) {
 
       var studName = student.FirstName + ' ' + student.LastName;
       console.log(studName);
-      
+
       if (studPrefs.indexOf(studName) === -1) {
         studTable.append('<tr><td>' + group.name + '</td><td>' + studName + '</td><td>-</td></tr>');
       } else {
@@ -71,18 +79,8 @@ function getMatchingStudents(data) {
 
   });
 
-  $('.iteration-button').click(function () {
-    $(document).ready(function () {
-      $.ajax({
-        url: 'http://localhost:8080/api/matching',
-        method: 'POST',
-        dataType: 'json',
-        data: 'groups'
-      }).done(startMatching);
-    });
-  });
 }
 
-function startMatching() {
-  
+function startMatching(data) {
+  console.log(data);
 }

@@ -7,19 +7,33 @@
   <script src="js/jquery-3.1.1.min.js"></script>
   <script src="js/materialize.min.js"></script>
   <link rel="stylesheet" href="css/materialize.min.css">
+  <link rel="stylesheet" href="css/monitoring.css">
 </head>
 <body>
-  <div class="monitoring-container">
-    <table>
-      <tr>
-        <th>Группа</th>
-        <th>Список студентов</th>
-        <th>Преподаватели выбраны</th>
-      </tr>
-    </table>
+  <div class="row container monitoring-container">
+    <nav style="margin: 0 0 10px 0; padding-left: 10px;" class="teal darken-4">
+      <div class="nav-wrapper">
+       <div>
+        <a href="#" class="right brand-logo teal darken-4" style="background: transparent !important;">Сервис распределения студентов</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+          <li><a href="student.html">Мониторинг</a></li>
+          <li><a href="student.html">Распределение</a></li>
+        </ul>
+      </div></div>
+    </nav>
+    <div style="position: relative; height: 500px; padding: 15px;" class="teal lighten-4 z-depth-2">
+      <div style="height: 400px; overflow: auto">
+        <table>
+          <tr>
+            <th>Группа</th>
+            <th>Список студентов</th>
+            <th>Преподаватели выбраны</th>
+          </tr>
+        </table>
+      </div>
+      <button class="btn teal darken-4 iteration-button">Начать распределение</button>
+    </div>
   </div>
-
-  <button class="iteration-button">Следующий шаг</button>
 
   <script src="js/monitoring.js"></script>
 </body>

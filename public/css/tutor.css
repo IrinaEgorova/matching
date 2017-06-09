@@ -225,3 +225,14 @@ nav .brand-logo {
 .group {
     float: right;
 }
+
+input[type="text"] {
+    width: 95%;
+    margin: 0;
+    height: 35px;
+}
+
+label {
+    color: #113333;
+    margin-right: 7px;
+}
