@@ -11,6 +11,41 @@ $(document).ready(function () {
     e.stopPropagation();
     $studinfo.show();
   });
+  var token = localStorage.getItem('user-token');
+  console.log('Original Token', token);
+  if (token == null) {
+    window.location.replace("http://localhost:8080/proxy/authentication/?redirect=localhost:8080");
+  }
+  $.ajax({
+    url: 'http://localhost:8080/api/getTokenData',
+    method: 'POST',
+    dataType: 'json',
+    data: {
+      token: token
+    },
+    error: function (xhr, status, error) {
+      console.log(xhr.responseText + '|\n' + status + '|\n' + error);
+    }
+  }).done(function (data) {
+    console.log(data);
+
+    // // TODO: change ip to localhost
+    $.ajax({
+      url: 'http://localhost:8080/proxy/core/v1/people/' + data.uid,
+      method: 'POST',
+      dataType: 'json'
+    }).done(function (tutorInfo) {
+      $.ajax({
+        url: 'http://localhost:8080/api/getCurrentIteration',
+        method: 'GET',
+        dataType: 'json'
+      }).done(function (matchingData) {
+        console.log(matchingData); // Array of tutors matchingData[0].data[0].
+        // Найти препода в массиве matchingData по фамилии
+      });
+    });
+  });
+
 });
 
 $(document).click(function () {

@@ -26,14 +26,22 @@ if (!Array.prototype.find) {
 }
 
 $(document).ready(function () {
-  $('.iteration-button').click(function (){
+  $('.first-iteration-button').click(function (){
     console.log('click');
     $.ajax({
-      url: 'http://localhost:8080/api/matching',
+      url: 'http://localhost:8080/api/startMatching',
       method: 'POST',
       dataType: 'json'
     }).done(startMatching);
   });
+  // $('.iteration-button').click(function (){
+  //   console.log('click');
+  //   $.ajax({
+  //     url: 'http://localhost:8080/api/matching',
+  //     method: 'POST',
+  //     dataType: 'json'
+  //   }).done(startMatching);
+  // });
   $.ajax({
     url: 'http://localhost:8080/api/getMatchingStudents',
     method: 'GET',

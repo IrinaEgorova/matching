@@ -138,6 +138,12 @@ Query.prototype.insertQuotas = function (tutors) {
   }
 };
 
+Query.prototype.dropStudents = function () {
+  this.connection.query("TRUNCATE TABLE `matching`.`stud_pref`", function (err) {
+    if (err) throw err;
+  });
+};
+
 Query.prototype.getStudPrefs = function (callback) {
   var dbStudPrefs;
   // console.log(stud_id);
