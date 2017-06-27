@@ -249,14 +249,14 @@ function copyTutors(tutors) {
     tutorsStep[i].groupQuotas = [];
     for (var j = 0; j < tutors[i].groupQuotas.length; j++) {
       tutorsStep[i].groupQuotas[j] = {};
-      tutorsStep[i].groupQuotas[j].groupName = tutors[i].groupQuotas[j].groupName;
+      tutorsStep[i].groupQuotas[j].groupID = tutors[i].groupQuotas[j].groupID;
       tutorsStep[i].groupQuotas[j].groupQuota = tutors[i].groupQuotas[j].groupQuota;
     }
 
     tutorsStep[i].studLists = [];
     for (var j = 0; j < tutors[i].studLists.length; j++) {
       tutorsStep[i].studLists[j] = {};
-      tutorsStep[i].studLists[j].groupName = tutors[i].groupQuotas[j].groupName;
+      tutorsStep[i].studLists[j].groupID = tutors[i].groupQuotas[j].groupID;
       tutorsStep[i].studLists[j].groupList = [];
       for (var k = 0; k < tutors[i].studLists[j].groupList.length; k++) {
         tutorsStep[i].studLists[j].groupList[k] = tutors[i].studLists[j].groupList[k];
@@ -327,19 +327,19 @@ Matching.matchingStep = function (tutors) {
   }
 
   removedStudents.forEach(function (student) {
-    var nextTutorIndex = student.preferences.indexOf(student.curTutor.name) + 1;
+    var nextTutorIndex = student.preferences.indexOf(student.curTutor) + 1;
     var nextTutor = student.preferences[nextTutorIndex];
     var tutor = tutorsStep.find(function (tutor) {
       return tutor.name === nextTutor;
     });
     // console.log('tutors', tutor);
     var studList = tutor.studLists.find(function (list) {
-      return list.groupName === student.group;
+      return list.groupID === student.groupID;
     });
     // console.log('studList', studList);
     if (studList.groupList.indexOf(student) === -1) {
       studList.groupList.push(student);
-      student.curTutor = tutor;
+      student.curTutor = tutor.name;
       updateTutor(tutors, tutor);
       // console.log('updated', tutors);
     }
@@ -364,9 +364,9 @@ Matching.firstStep = function (students, tutors) {
       var t = tutors[j];
       if (t.name === curStudentPref) {
         for (var k = 0; k < t.studLists.length; k++) {
-          if (t.studLists[k].groupName === students[i].group) {
+          if (t.studLists[k].groupID === students[i].groupID) {
             t.studLists[k].groupList.push(students[i]);
-            students[i].curTutor = t;
+            students[i].curTutor = t.name;
           }
         }
       }

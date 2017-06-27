@@ -19,6 +19,7 @@ const sequelize = new Sequelize('mysql://I:1234@localhost:3307/matching', {
 });
 
 
+
 query.getGroups(function (groups) {
   var url = encodeURI('http://82.179.88.27:8280/core/v1/groups');
 
@@ -102,6 +103,7 @@ function compareUsers(users, dbUsers) {
     user.FirstName = users[i].givenName;
     user.LastName = (Array.isArray(users[i].sn)) ? users[i].sn[0] : users[i].sn;
     user.PatronymicName = users[i].initials;
+    user.displayName = users[i].displayName;
     user.UID = users[i].uid;
     usersArray.push(user);
   }
@@ -450,9 +452,11 @@ app.post('/api/getTokenData', function (req, res) {
     })
     .then(function (person) {
       var title = person.title;
+      var personName = person.displayName;
       var jsonTitle = {
         title: title,
-        uid: decoded.sub
+        uid: decoded.sub,
+        name: personName
       };
       res.send(JSON.stringify(jsonTitle));
     });
@@ -568,7 +572,7 @@ function getStudentById(id, students) {
     }
   }
 }
-function getStudentsPrefs(students, tutors, prefs) {
+function getStudentsPrefs(students, tutors, groups, prefs) {
   var matchingStudents = [];
 
   prefs.forEach(function (pref) {
@@ -577,6 +581,10 @@ function getStudentsPrefs(students, tutors, prefs) {
     });
     var student = students.find(function (student) {
       return student.ID === pref.stud_id;
+    });
+
+    var group = groups.find(function (group) {
+      return group.id === student.Group_ID;
     });
 
     if (!student) {
@@ -595,11 +603,17 @@ function getStudentsPrefs(students, tutors, prefs) {
     if (!matchingStud.preferences) {
       matchingStud.preferences = [];
     }
-    matchingStud.preferences.push(tutor.LastName);
-    matchingStud.name = student.LastName;
-    matchingStud.group = student.Group_ID;
+    // matchingStud.preferences.push(tutor.UID.toString());
+    // matchingStud.name = student.UID;
+    matchingStud.preferences.push(tutor.UID.toString());
+    matchingStud.name = student.UID;
+    matchingStud.displayName = student.FirstName + ' ' + student.LastName + ' ' + student.PatronymicName;
+    matchingStud.id = student.ID;
+    matchingStud.groupID = student.Group_ID;
+    matchingStud.groupName = group.name;
     matchingStudents[index] = matchingStud;
   });
+
   return matchingStudents;
 }
 
@@ -624,13 +638,16 @@ function getTutorsPrefs(tutors, groups, quotas) {
 
     var index = matchingTutors.indexOf(matchingTutor);
 
-    matchingTutor.name = tutor.LastName;
+    matchingTutor.name = tutor.UID;
+    matchingTutor.displayName = tutor.FirstName + ' ' + tutor.LastName + ' ' + tutor.PatronymicName;
+    matchingTutor.id = tutor.ID;
     matchingTutor.commonQuota = (matchingTutor.commonQuota == null) ? 0 : matchingTutor.commonQuota + quota.Quota;
 
     if (!matchingTutor.groupQuotas) {
       matchingTutor.groupQuotas = [];
     }
     var groupQuota = {
+      groupID: group.id,
       groupName: group.name,
       groupQuota: quota.Quota
     };
@@ -640,10 +657,11 @@ function getTutorsPrefs(tutors, groups, quotas) {
       matchingTutor.studLists = [];
     }
     var studList = matchingTutor.studLists.find(function (list) {
-      return list.groupName === group.name;
+      return list.groupID === group.id;
     });
     if (!studList) {
       studList = {
+        groupID: group.id,
         groupName: group.name,
         groupList: []
       };
@@ -658,22 +676,23 @@ function getTutorsPrefs(tutors, groups, quotas) {
 
 app.post('/api/startMatching', function (req, res) {
   req.models.matching_data.find({},["id", "Z"], 1 ,function (err, mData) {
-    var matchingNumber = mData[0].matching_number;
-    matchingNumber = (matchingNumber == null) ? 0 : matchingNumber;
+
+    var matchingNumber = mData[0] ? mData[0].matching_number : 0;
     matchingNumber += 1;
     req.models.students.all(function (err, students) {
     req.models.tutors_groups.all(function (err, quotas) {
     req.models.tutors.all(function (err, tutors) {
     req.models.groupsTable.all(function (err, groups) {
     req.models.stud_pref.all(function (err, prefs) {
-      var matchingStudents = getStudentsPrefs(students, tutors, prefs);
+      var matchingStudents = getStudentsPrefs(students, tutors, groups, prefs);
       var matchingTutors = getTutorsPrefs(tutors, groups, quotas);
 
       var firstStepTutors = Matching.firstStep(matchingStudents, matchingTutors);
+
       var result = {
-        students: matchingStudents,
-        tutors: matchingTutors,
-        firstStep: firstStepTutors
+        students: JSON.stringify(matchingStudents),
+        tutors: JSON.stringify(matchingTutors),
+        firstStep: JSON.stringify(firstStepTutors)
       };
 
       req.models.matching_data.create({
@@ -688,6 +707,7 @@ app.post('/api/startMatching', function (req, res) {
       });
 
       query.dropStudents();
+
       res.send(result);
     });
     });

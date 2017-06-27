@@ -1,3 +1,26 @@
+if (!Array.prototype.find) {
+  Array.prototype.find = function (predicate) {
+    if (this == null) {
+      throw new TypeError('Array.prototype.find called on null or undefined');
+    }
+    if (typeof predicate !== 'function') {
+      throw new TypeError('predicate must be a function');
+    }
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+
+    for (var i = 0; i < length; i++) {
+      value = list[i];
+      if (predicate.call(thisArg, value, i, list)) {
+        return value;
+      }
+    }
+    return undefined;
+  };
+}
+
 $(document).ready(function () {
   $('.tutors-item').click(function (e) {
     var $studinfo = $('.student-info');
@@ -29,20 +52,42 @@ $(document).ready(function () {
   }).done(function (data) {
     console.log(data);
 
-    // // TODO: change ip to localhost
+    $('.tutor-name').html(data.name);
+
     $.ajax({
-      url: 'http://localhost:8080/proxy/core/v1/people/' + data.uid,
-      method: 'POST',
+      url: 'http://localhost:8080/api/getCurrentIteration',
+      method: 'GET',
       dataType: 'json'
-    }).done(function (tutorInfo) {
-      $.ajax({
-        url: 'http://localhost:8080/api/getCurrentIteration',
-        method: 'GET',
-        dataType: 'json'
-      }).done(function (matchingData) {
-        console.log(matchingData); // Array of tutors matchingData[0].data[0].
-        // Найти препода в массиве matchingData по фамилии
+    }).done(function (matchingData) {
+      console.log(matchingData); // Array of tutors matchingData[0].data[0].
+      // Найти препода в массиве matchingData по фамилии
+      var tutor = matchingData[0].data.find(function (tutor) {
+        return tutor.name === data.uid;
       });
+
+      if (tutor) {
+        for (var i = 0; i < tutor.studLists.length; i++) {
+          var groupList = tutor.studLists[i].groupList;
+          var groupName = tutor.studLists[i].groupName;
+          for (var j = 0; j < groupList.length; j++) {
+            var student = groupList[j].displayName;
+            var iteration = matchingData[0].iteration;
+            var quota = tutor.groupQuotas[i].groupQuota;
+
+            $('.iteration').html(iteration + 1);
+            $('.quota').html(quota);
+
+            var position = (i + 1) * (j + 1);
+            var color = position > quota ? 'red' : 'green';
+
+            var studItem = $('<div class="tutors-item draggable ' + color + '"><span>'
+              + position + '. </span><span>' + student
+              + '</span><span class="group">' + groupName + '</span></div>');
+            $('.students-list').append(studItem);
+          }
+        }
+      }
+
     });
   });
 

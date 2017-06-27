@@ -216,6 +216,9 @@ $(document).ready(function () {
       console.log(xhr.responseText + '|\n' + status + '|\n' + error);
     }
   }).done(function (data) {
+
+    $('.student-name').html(data.name);
+
     // TODO: change ip to localhost
     $.ajax({
       url: 'http://localhost:8080/api/getTutors',
@@ -247,6 +250,7 @@ $(document).ready(function () {
         console.log(xhr.responseText + '|\n' + status + '|\n' + error);
       }
     }).done(function (data) {
+
       $.ajax({
         url: 'http://localhost:8080/api/preferences',
         method: 'POST',

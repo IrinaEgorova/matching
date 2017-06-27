@@ -13,7 +13,7 @@
 <div class="container">
     <nav style="margin: 0; padding-left: 10px;" class="teal darken-4">
         <div class="nav-wrapper">
-            <div style="position: absolute;left: 680px;z-index: 1000;top: 18px;">Трубаков Андрей Олегович</div>
+            <div class="tutor-name" style="position: absolute;left: 680px;z-index: 1000;top: 18px;"></div>
                 <div>
                     <a href="#" class="right brand-logo teal darken-4" style="
                         margin-top: -12px;
@@ -28,8 +28,8 @@
     </nav>
     <div class="nav-content">
         <div class="iteration-info">
-            <div>Текущая итерация: 1</div>
-            <div>Квота: 3</div>
+            <div>Текущая итерация: <span class="iteration"></span></div>
+            <div>Квота: <span class="quota"></span></div>
             <!--<a href="#">Запросить увеличение квоты</a>-->
         </div>
     </div>
@@ -39,51 +39,51 @@
             <div class="header">Список студентов</div>
             <div id="left-panel" class="panel">
                 <div class="students-list droppable">
-                    <div class="tutors-item green draggable">
-                        <span>1. </span>
-                        <span>Морозов Дмитрий Сергеевич</span>
-                        <span class="group">13ПРИ</span>
-                    </div>
-                    <div class="tutors-item green draggable">
-                        <span>2. </span>
-                        <span>Шарова Юлия Сергеевна</span>
-                        <span class="group">13ПРИ</span>
-                    </div>
-                    <div class="tutors-item green draggable">
-                        <span>3. </span>
-                        <span>Петрухин Роман Артурович</span>
-                        <span class="group">13МОА</span>
-                    </div>
-                    <div class="tutors-item red selected draggable">
-                        <span>4. </span>
-                        <span>Иванов Владислав Александрович</span>
-                        <span class="group">13ПРИ</span>
-                    </div>
-                    <div class="tutors-item red draggable">
-                        <span>5. </span>
-                        <span>Баранов Владимир Николаевич</span>
-                        <span class="group">13ПРИ</span>
-                    </div>
-                    <div class="tutors-item red draggable">
-                        <span>6. </span>
-                        <span>Гусаров Алексей Викторович</span>
-                        <span class="group">13МОА</span>
-                    </div>
-                    <div class="tutors-item red draggable">
-                        <span>7. </span>
-                        <span>Полякова Марина Сергеевна</span>
-                        <span class="group">13МОА</span>
-                    </div>
-                    <div class="tutors-item red draggable">
-                        <span>8. </span>
-                        <span>Цветков Максим Геннадьевич</span>
-                        <span class="group">13ИВТ</span>
-                    </div>
-                    <div class="tutors-item red draggable">
-                        <span>9. </span>
-                        <span>Левкина Ольга Константиновна</span>
-                        <span class="group">13МОА</span>
-                    </div>
+                    <!--<div class="tutors-item green draggable">-->
+                        <!--<span>1. </span>-->
+                        <!--<span>Морозов Дмитрий Сергеевич</span>-->
+                        <!--<span class="group">13ПРИ</span>-->
+                    <!--</div>-->
+                    <!--<div class="tutors-item green draggable">-->
+                        <!--<span>2. </span>-->
+                        <!--<span>Шарова Юлия Сергеевна</span>-->
+                        <!--<span class="group">13ПРИ</span>-->
+                    <!--</div>-->
+                    <!--<div class="tutors-item green draggable">-->
+                        <!--<span>3. </span>-->
+                        <!--<span>Петрухин Роман Артурович</span>-->
+                        <!--<span class="group">13МОА</span>-->
+                    <!--</div>-->
+                    <!--<div class="tutors-item red selected draggable">-->
+                        <!--<span>4. </span>-->
+                        <!--<span>Иванов Владислав Александрович</span>-->
+                        <!--<span class="group">13ПРИ</span>-->
+                    <!--</div>-->
+                    <!--<div class="tutors-item red draggable">-->
+                        <!--<span>5. </span>-->
+                        <!--<span>Баранов Владимир Николаевич</span>-->
+                        <!--<span class="group">13ПРИ</span>-->
+                    <!--</div>-->
+                    <!--<div class="tutors-item red draggable">-->
+                        <!--<span>6. </span>-->
+                        <!--<span>Гусаров Алексей Викторович</span>-->
+                        <!--<span class="group">13МОА</span>-->
+                    <!--</div>-->
+                    <!--<div class="tutors-item red draggable">-->
+                        <!--<span>7. </span>-->
+                        <!--<span>Полякова Марина Сергеевна</span>-->
+                        <!--<span class="group">13МОА</span>-->
+                    <!--</div>-->
+                    <!--<div class="tutors-item red draggable">-->
+                        <!--<span>8. </span>-->
+                        <!--<span>Цветков Максим Геннадьевич</span>-->
+                        <!--<span class="group">13ИВТ</span>-->
+                    <!--</div>-->
+                    <!--<div class="tutors-item red draggable">-->
+                        <!--<span>9. </span>-->
+                        <!--<span>Левкина Ольга Константиновна</span>-->
+                        <!--<span class="group">13МОА</span>-->
+                    <!--</div>-->
                 </div>
             </div>
             <button class="btn send-button" style="margin-right: 10px">Отправить</button>
@@ -91,24 +91,24 @@
         </div>
         <div class="right col s6">
             <div class="student-info col s6">
-                <div class="arrow">
-                    <div class="inner-arrow"></div>
-                </div>
-                <div class="info-header">Иванов Владислав Александрович &nbsp;
-                    13ПРИ
-                </div>
-                <div class="info-panel">
-                    <div class="info"><span>Предпочитаемая тема работы:</span>
-                        Программа для скрытого слежения за компьютером
-                        (отслеживание запускаемых приложений, посещаемых сайтов,
-                        снимки экрана)
-                    </div>
-                    <br>
-                    <div class="info"><span>Средства разработки:</span> C/C++,
-                        WinAPI, Visual Studio, QT
-                    </div>
-                    <br>
-                </div>
+                <!--<div class="arrow">-->
+                    <!--<div class="inner-arrow"></div>-->
+                <!--</div>-->
+                <!--<div class="info-header">Иванов Владислав Александрович &nbsp;-->
+                    <!--13ПРИ-->
+                <!--</div>-->
+                <!--<div class="info-panel">-->
+                    <!--<div class="info"><span>Предпочитаемая тема работы:</span>-->
+                        <!--Программа для скрытого слежения за компьютером-->
+                        <!--(отслеживание запускаемых приложений, посещаемых сайтов,-->
+                        <!--снимки экрана)-->
+                    <!--</div>-->
+                    <!--<br>-->
+                    <!--<div class="info"><span>Средства разработки:</span> C/C++,-->
+                        <!--WinAPI, Visual Studio, QT-->
+                    <!--</div>-->
+                    <!--<br>-->
+                <!--</div>-->
             </div>
         </div>
     </div>
