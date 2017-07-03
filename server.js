@@ -599,7 +599,6 @@ function getStudentsPrefs(students, tutors, groups, prefs) {
       matchingStudents.push(matchingStud);
     }
     var index = matchingStudents.indexOf(matchingStud);
-
     if (!matchingStud.preferences) {
       matchingStud.preferences = [];
     }
@@ -720,5 +719,24 @@ app.post('/api/startMatching', function (req, res) {
 app.get('/api/getCurrentIteration', function (req, res) {
   req.models.matching_data.find({},["id", "Z"], 1 ,function (err, mData) {
     res.send(mData);
+  });
+});
+
+app.get('/api/sendStudIDs', function (req, res) {
+  var studIDs = req.body.studIDs;
+  req.models.students.find({ID: studIDs}, function (err, person) {
+    var studID = person[0].ID;
+    req.models.matching_data.find({},["id", "Z"], 1 ,function (err, mData) {
+      var iteration = mData[0].iteration + 1;
+      var stud = mData.students.find(function (student) {
+        return student.id === studID;
+      });
+      var curTutor = stud.curTutor;
+      var prefs = stud.preferences;
+      var nextTutorIndex = prefs.indexOf(curTutor) + 1;
+      var nextTutor = prefs[nextTutorIndex];
+    });
+
+
   });
 });

@@ -79,8 +79,9 @@ $(document).ready(function () {
 
             var position = (i + 1) * (j + 1);
             var color = position > quota ? 'red' : 'green';
+            var id = groupList[j].id;
 
-            var studItem = $('<div class="tutors-item draggable ' + color + '"><span>'
+            var studItem = $('<div class="tutors-item draggable ' + color + '" data-id="' + id + '"><span>'
               + position + '. </span><span>' + student
               + '</span><span class="group">' + groupName + '</span></div>');
             $('.students-list').append(studItem);
@@ -89,6 +90,33 @@ $(document).ready(function () {
       }
 
     });
+  });
+
+  $('.send-button').click(function () {
+    var studItems = $('.tutors-item');
+    if (studItems.length <= 0) {
+      return;
+    }
+
+    var studIDs = [];
+
+    for (var i = 0; i < studItems.length; i++) {
+      studIDs[i] = studItems.attr('data-id');
+    }
+
+    $.ajax({
+      url: 'http://localhost:8080/api/sendStudIDs',
+      method: 'GET',
+      dataType: 'json',
+      data: {
+        tutor: tutor,
+        students: studIDs
+      }
+
+    }).done(function (data) {
+
+    });
+
   });
 
 });
