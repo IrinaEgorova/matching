@@ -2,8 +2,8 @@
  * Created by Iren on 09.04.2017.
  */
 
-var mysql = require('mysql')
-var fetch = require('node-fetch')
+var mysql = require('mysql');
+var fetch = require('node-fetch');
 
 
 var Query = function () {

@@ -202,9 +202,14 @@ for (var i = 0; i < tutors.length; i++) {
 $(document).ready(function () {
   var token = localStorage.getItem('user-token');
   console.log('Original Token', token);
+
+  // Если пользователь не вошел в систему, то он перенаправляется на форму авторизации.
   if (token == null) {
     window.location.replace("http://localhost:8080/proxy/authentication/?redirect=localhost:8080");
   }
+
+  // Если пользоватеь вошел в систему, то на сервер отправляется запрос,
+  // в котором по токену возвращается информация о пользователе.
   $.ajax({
     url: 'http://localhost:8080/api/getTokenData',
     method: 'POST',
@@ -219,7 +224,7 @@ $(document).ready(function () {
 
     $('.student-name').html(data.name);
 
-    // TODO: change ip to localhost
+    // Для данного студента запрашивается список преподавателей для выбора.
     $.ajax({
       url: 'http://localhost:8080/api/getTutors',
       method: 'POST',
@@ -230,6 +235,7 @@ $(document).ready(function () {
     }).done(showTutors);
   });
 
+  // Обработка отправки выбора студента на сервер.
   $('.send-button').click(function () {
     var $tutors = $('.selected-tutors-list .tutors-item');
     var tutors = [];
@@ -239,6 +245,7 @@ $(document).ready(function () {
     console.log(tutors);
     console.log(JSON.stringify(tutors));
 
+    // Получение данных о студенте.
     $.ajax({
       url: 'http://localhost:8080/api/getTokenData',
       method: 'POST',
@@ -251,6 +258,7 @@ $(document).ready(function () {
       }
     }).done(function (data) {
 
+       
       $.ajax({
         url: 'http://localhost:8080/api/preferences',
         method: 'POST',

@@ -19,7 +19,9 @@ const sequelize = new Sequelize('mysql://I:1234@localhost:3307/matching', {
 });
 
 
-
+// Получение списка групп из базы на кафедральном сервере и
+// запись его в базу данных сервиса.
+// Вызывается перед началом работы пользователей.
 query.getGroups(function (groups) {
   var url = encodeURI('http://82.179.88.27:8280/core/v1/groups');
 
@@ -37,6 +39,9 @@ query.getGroups(function (groups) {
     });
 });
 
+// Получение списка студентов из базы на кафедральном сервере и
+// запись его в базу данных сервиса.
+// Вызывается перед началом работы пользователей.
 query.getStudents(function (students) {
   var url = encodeURI('http://82.179.88.27:8280/core/v1/people?title=Студент');
 
@@ -62,6 +67,9 @@ query.getStudents(function (students) {
   }
 });
 
+// Получение списка преподавателей из базы на кафедральном сервере и
+// запись его в базу данных сервиса.
+// Вызывается перед началом работы пользователей.
 query.getTutors(function (tutors) {
   var url = encodeURI('http://82.179.88.27:8280/core/v1/people?title=Преподаватель');
 
@@ -360,6 +368,7 @@ var port = 8080;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
+
 app.use('/proxy', proxy('82.179.88.27:8280'));
 app.use(orm.express("mysql://I:1234@localhost:3307/matching", {
   define: function (db, models, next) {
@@ -428,15 +437,13 @@ app.use(orm.express("mysql://I:1234@localhost:3307/matching", {
 
 app.listen(port);
 console.log('server started');
-app.get('/', function (req, res) {
-  res.json({message: 'hello'})
-});
+
 
 //console.log(Matching);
 // tutors = Matching.firstStep(students, tutors);
 // Matching.matchingStep(tutors);
 
-
+// Получение информации о пользователе по переданному токену.
 app.post('/api/getTokenData', function (req, res) {
   var jwtToken = req.body.token;
   var decoded = jwt.decode(jwtToken);
@@ -462,6 +469,8 @@ app.post('/api/getTokenData', function (req, res) {
     });
 });
 
+// Получение списка преподавателей из базы данных сервиса.
+// Вызывается при переходе в личный кабинет ответственного за распределение (head.html).
 app.get('/api/tutors', function (req, res) {
   query.getTutors(function (tutors) {
     res.send(tutors);
@@ -491,6 +500,8 @@ app.post('/api/getTutors', function (req, res) {
   })
 });
 
+// Получение списка студентов
+// Вызывается при мониторинге ответственным списков студентов.
 app.get('/api/getMatchingStudents', function (req, res) {
   req.models.tutors_groups.all(function (err, quotas) {
     var groups = [];
@@ -513,6 +524,8 @@ app.get('/api/getMatchingStudents', function (req, res) {
   })
 });
 
+// Получение списка студентов, которые уже сделали выбор.
+// Вызывается при мониторинге ответственным списков студентов.
 app.get('/api/getStudentsWithPref', function (req, res) {
   req.models.stud_pref.all(function (err, pref) {
     var students = [];
@@ -529,6 +542,7 @@ app.get('/api/getStudentsWithPref', function (req, res) {
   })
 });
 
+
 app.post('/api/preferences', function (req, res) {
   var studUID = req.body.studentUID;
   req.models.students.find({UID: studUID}, function (err, student) {
@@ -539,12 +553,16 @@ app.post('/api/preferences', function (req, res) {
   res.send(req.body.pref);
 });
 
+// Запись данных о квотах преподавателей по группам в базу данных сервиса.
+// Вызывается при запуске распределения ответственным.
 app.post('/api/quotas', function (req, res) {
   query.insertQuotas(req.body.tutors);
 
   res.send(req.body.pref);
 });
 
+// Получение списка групп из базы данных сервиса.
+// Вызывается при переходе в личный кабинет ответственного за распределение (head.html).
 app.get('/api/groups', function (req, res) {
   query.getGroups(function (groups) {
     res.send(groups);
@@ -673,6 +691,8 @@ function getTutorsPrefs(tutors, groups, quotas) {
   return matchingTutors;
 }
 
+// Начинает процесс распределения, запускает первую итерацию алгоритма.
+// Вызывается при нажатии на кнопку "Начать распределение" на странице мониторинга.
 app.post('/api/startMatching', function (req, res) {
   req.models.matching_data.find({},["id", "Z"], 1 ,function (err, mData) {
 

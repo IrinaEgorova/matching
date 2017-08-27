@@ -38,6 +38,7 @@ function showButtons() {
   }
 }
 
+// Генерация слайдов с выбором преподавателей для выбранных групп.
 function generateSlide(groupInput) {
   var groupName = $(groupInput).next().text();
 

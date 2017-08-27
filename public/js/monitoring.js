@@ -34,14 +34,7 @@ $(document).ready(function () {
       dataType: 'json'
     }).done(startMatching);
   });
-  // $('.iteration-button').click(function (){
-  //   console.log('click');
-  //   $.ajax({
-  //     url: 'http://localhost:8080/api/matching',
-  //     method: 'POST',
-  //     dataType: 'json'
-  //   }).done(startMatching);
-  // });
+
   $.ajax({
     url: 'http://localhost:8080/api/getMatchingStudents',
     method: 'GET',
